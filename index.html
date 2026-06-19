@@ -145,13 +145,10 @@
     </div>
 
     <script>
-       fetch('https://gmc-jewel-airlines-vii.trycloudflare.com/api/registrar-comuna', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(datosDeLaComuna)
-})
+        // VARIABLE GLOBAL CON LA URL DEL TÚNEL ACTIVO
+        const URL_SERVIDOR = "https://gmc-jewel-airlines-vii.trycloudflare.com";
+        
+        let cacheDatosInscritos = [];
 
         function cambiarVista(vista) {
             document.getElementById('vista-registro').classList.add('hidden');
@@ -175,7 +172,6 @@
         function procesarInscripcion(event) {
             event.preventDefault();
 
-            // Mapear los inputs dinámicos de los atletas
             const filas = document.querySelectorAll('.fila-atleta');
             const listaAtletas = [];
             filas.forEach(fila => {
@@ -200,19 +196,21 @@
             })
             .then(res => res.json())
             .then(data => {
-                if(data.success) {
-                    descargarFichaPDF(datosPayload);
-                    alert("¡Inscripción de la Comuna guardada exitosamente en el Palacio!");
-                    document.getElementById('form-comunal').reset();
-                    // Reiniciar nómina dejando una sola fila
-                    document.getElementById('contenedor-atletas').innerHTML = `
-                        <div class="fila-atleta grid grid-cols-1 sm:grid-cols-3 gap-2 p-3 bg-indigo-50/50 rounded border items-center">
-                            <input type="text" placeholder="Cédula de Identidad" required class="atleta-cedula p-2 border rounded w-full bg-white">
-                            <input type="text" placeholder="Nombre Completo del Atleta" required class="atleta-nombre p-2 border rounded w-full col-span-2 bg-white">
-                        </div>
-                    `;
-                }
-            }).catch(err => alert("Error al conectar con Proxmox"));
+                descargarFichaPDF(datosPayload);
+                alert("¡Inscripción de la Comuna guardada exitosamente en el Palacio!");
+                document.getElementById('form-comunal').reset();
+                
+                document.getElementById('contenedor-atletas').innerHTML = `
+                    <div class="fila-atleta grid grid-cols-1 sm:grid-cols-3 gap-2 p-3 bg-indigo-50/50 rounded border items-center">
+                        <input type="text" placeholder="Cédula de Identidad" required class="atleta-cedula p-2 border rounded w-full bg-white">
+                        <input type="text" placeholder="Nombre Completo del Atleta" required class="atleta-nombre p-2 border rounded w-full col-span-2 bg-white">
+                    </div>
+                `;
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Error al conectar con Proxmox. Asegúrate de que el backend y el servicio del túnel estén corriendo.");
+            });
         }
 
         function descargarFichaPDF(datos) {
@@ -250,7 +248,6 @@
             .then(data => {
                 cacheDatosInscritos = data;
                 
-                // Cargar dinámicamente el listado de comunas en el filtro
                 const selectorComunas = document.getElementById('filtro-comuna');
                 selectorComunas.innerHTML = '<option value="">Todas las comunas</option>';
                 const comunasUnicas = [...new Set(data.map(item => item.comuna))];
@@ -259,10 +256,10 @@
                 });
 
                 renderizarTabla(data);
-            });
+            })
+            .catch(err => console.error("Error al cargar datos desde el backend:", err));
         }
 
-        // FUNCIÓN CLAVE: Renderiza y aplica filtros dinámicos en el cliente
         function aplicarFiltros() {
             const filtroC = document.getElementById('filtro-comuna').value.toLowerCase();
             const filtroD = document.getElementById('filtro-disciplina').value.toLowerCase();
@@ -284,7 +281,6 @@
                 return;
             }
             datos.forEach(row => {
-                // Formatear nómina de atletas para la celda visible
                 const listadoHTML = row.atletas.map(a => `• C.I: ${a.cedula} - ${a.nombre}`).join('<br>');
                 tbody.innerHTML += `
                     <tr class="hover:bg-gray-50">
