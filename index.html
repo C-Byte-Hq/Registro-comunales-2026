@@ -145,8 +145,13 @@
     </div>
 
     <script>
-        const URL_SERVIDOR = "https://satin-opinion-gasoline-conflicts.trycloudflare.com"; 
-        let cacheDatosInscritos = []; // Almacena temporalmente lo traído de Proxmox para filtrar sin re-consultar
+       fetch('https://gmc-jewel-airlines-vii.trycloudflare.com/api/registrar-comuna', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(datosDeLaComuna)
+})
 
         function cambiarVista(vista) {
             document.getElementById('vista-registro').classList.add('hidden');
