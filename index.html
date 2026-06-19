@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Juegos Comunales | Palacio del Deporte</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+    <nav class="bg-indigo-600 text-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <span class="font-bold text-xl tracking-tight">Juegos Comunales 2026</span>
+                <div class="flex space-x-4">
+                    <button onclick="cambiarVista('inicio')" class="hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium">Inicio</button>
+                    <button onclick="cambiarVista('registro')" class="hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium">Inscripción</button>
+                    <button onclick="cambiarVista('admin')" class="hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium">Personal Palacio</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto p-6 mt-6">
+
+        <section id="vista-inicio" class="bg-white p-8 rounded-lg shadow-md">
+            <h1 class="text-3xl font-bold text-indigo-600 mb-4 text-center">¡Bienvenidos a los Juegos Comunales!</h1>
+            <p class="text-gray-600 text-center mb-6">Regístrate en línea, adjunta tu fotografía, descarga tu ficha técnica oficial y participa en las distintas disciplinas del Palacio del Deporte.</p>
+            <div class="flex justify-center">
+                <button onclick="cambiarVista('registro')" class="bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition">Ir al Formulario de Registro</button>
+            </div>
+        </section>
+
+        <section id="vista-registro" class="hidden bg-white p-8 rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">Formulario de Inscripción</h2>
+            
+            <form id="form-registro" onsubmit="procesarRegistro(event)" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Nombre del Equipo o Atleta</label>
+                        <input type="text" id="reg-nombre" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Comunidad / Sector</label>
+                        <input type="text" id="reg-comunidad" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Disciplina Deportiva</label>
+                        <select id="reg-deporte" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500">
+                            <option value="">Seleccione...</option>
+                            <option value="Baloncesto">Baloncesto</option>
+                            <option value="Fútbol Sala">Fútbol Sala</option>
+                            <option value="Voleibol">Voleibol</option>
+                            <option value="Balonmano">Balonmano</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Categoría</label>
+                        <input type="text" id="reg-categoria" placeholder="Ej: Sub-15, Libre" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700">Nombre del Delegado / Responsable</label>
+                        <input type="text" id="reg-delegado" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700">Foto del Atleta o Logo del Equipo</label>
+                        <input type="file" id="reg-foto" accept="image/*" required class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                    </div>
+                </div>
+
+                <div class="pt-4">
+                    <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-lg font-bold hover:bg-green-700 transition shadow-md">
+                        Registrar y Descargar Ficha (PDF)
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <section id="vista-admin" class="hidden bg-white p-8 rounded-lg shadow-md">
+            <div id="admin-login" class="space-y-4 max-w-sm mx-auto text-center">
+                <h2 class="text-xl font-bold text-gray-800">Acceso Personal Palacio del Deporte</h2>
+                <input type="password" id="admin-pass" placeholder="Introduce la clave de acceso" class="w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                <button onclick="verificarAcceso()" class="w-full bg-indigo-600 text-white py-2 rounded-md font-semibold hover:bg-indigo-700">Ingresar</button>
+            </div>
+
+            <div id="admin-panel" class="hidden space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-center border-b pb-4 gap-4">
+                    <h2 class="text-2xl font-bold text-indigo-600">Control de Equipos Inscritos</h2>
+                    <button onclick="exportarExcel()" class="bg-green-600 text-white px-4 py-2 rounded-md font-medium hover:bg-green-700 transition">Descargar Excel (.xlsx)</button>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200 shadow-sm border rounded-lg" id="tabla-registros">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Atleta/Equipo</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Comunidad</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deporte</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoría</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Delegado</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Foto Adjunta</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200" id="tabla-cuerpo">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="plantilla-pdf" class="hidden p-10 bg-white text-black font-serif mx-auto" style="width: 750px;">
+        <div class="text-center border-b-4 border-indigo-700 pb-4 mb-6">
+            <h1 class="text-3xl font-bold uppercase text-indigo-900 tracking-tight">Ficha Oficial de Inscripción</h1>
+            <p class="text-sm font-bold tracking-widest text-gray-500 mt-1">JUEGOS COMUNALES — PALACIO DEL DEPORTE</p>
+        </div>
+        
+        <div class="flex justify-between items-start gap-6 my-6">
+            <div class="space-y-4 text-base flex-1">
+                <p class="border-b pb-1"><strong>Nombre o Equipo:</strong> <span id="pdf-nombre" class="ml-2 font-sans text-gray-800"></span></p>
+                <p class="border-b pb-1"><strong>Comunidad / Sector:</strong> <span id="pdf-comunidad" class="ml-2 font-sans text-gray-800"></span></p>
+                <p class="border-b pb-1"><strong>Disciplina Deportiva:</strong> <span id="pdf-deporte" class="ml-2 font-sans text-gray-800"></span></p>
+                <p class="border-b pb-1"><strong>Categoría Inscrita:</strong> <span id="pdf-categoria" class="ml-2 font-sans text-gray-800"></span></p>
+                <p class="border-b pb-1"><strong>Delegado Responsable:</strong> <span id="pdf-delegado" class="ml-2 font-sans text-gray-800"></span></p>
+                <p class="border-b pb-1"><strong>Fecha de Registro:</strong> <span id="pdf-fecha" class="ml-2 font-sans text-gray-800"></span></p>
+            </div>
+            <div class="w-36 h-44 border-2 border-gray-400 bg-gray-100 flex items-center justify-center p-1 rounded shadow-sm">
+                <img id="pdf-foto-preview" class="w-full h-full object-cover hidden" alt="Foto del atleta">
+                <span id="pdf-foto-placeholder" class="text-xs text-gray-400 text-center px-1">Foto del Atleta</span>
+            </div>
+        </div>
+
+        <div class="mt-24 flex justify-between px-6">
+            <div class="border-t-2 border-gray-800 w-48 text-center pt-2 text-xs font-semibold uppercase">Firma del Delegado</div>
+            <div class="border-t-2 border-gray-800 w-48 text-center pt-2 text-xs font-semibold uppercase">Recepción Palacio</div>
+        </div>
+    </div>
+
+    <script>
+        // CONEXIÓN DIRECTA CON EL TÚNEL DE TU CONTENEDOR EN PROXMOX
+        const URL_SERVIDOR = "https://chapters-chamber-urls-coins.trycloudflare.com"; 
+
+        // Navegación interna entre las distintas pestañas
+        function cambiarVista(vista) {
+            document.getElementById('vista-inicio').classList.add('hidden');
+            document.getElementById('vista-registro').classList.add('hidden');
+            document.getElementById('vista-admin').classList.add('hidden');
+
+            if(vista === 'inicio') document.getElementById('vista-inicio').classList.remove('hidden');
+            if(vista === 'registro') document.getElementById('vista-registro').classList.remove('hidden');
+            if(vista === 'admin') document.getElementById('vista-admin').classList.remove('hidden');
+        }
+
+        // Procesa el registro enviando texto y binario (imagen) al servidor en Proxmox
+        function procesarRegistro(event) {
+            event.preventDefault();
+
+            const fotoArchivo = document.getElementById('reg-foto').files[0];
+            if(!fotoArchivo) {
+                alert("Por favor, cargue la fotografía obligatoria.");
+                return;
+            }
+
+            // Construcción del FormData (Permite transmisiones multipart/form-data)
+            const formData = new FormData();
+            formData.append('nombre', document.getElementById('reg-nombre').value);
+            formData.append('comunidad', document.getElementById('reg-comunidad').value);
+            formData.append('deporte', document.getElementById('reg-deporte').value);
+            formData.append('categoria', document.getElementById('reg-categoria').value);
+            formData.append('delegado', document.getElementById('reg-delegado').value);
+            formData.append('foto', fotoArchivo);
+
+            // Despachar los datos hacia el Endpoint del Backend local en el Palacio
+            fetch(`${URL_SERVIDOR}/api/registrar`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => {
+                if(!res.ok) throw new Error("Error HTTP en el servidor de Proxmox");
+                return res.json();
+            })
+            .then(data => {
+                if(data.success) {
+                    // Si el servidor guardó todo bien, generamos el PDF de inmediato para el cliente
+                    generarPDF(data.foto_ruta);
+                    alert("¡Inscripción procesada y almacenada en el servidor del Palacio del Deporte!");
+                    document.getElementById('form-registro').reset();
+                } else {
+                    alert("El servidor rechazó el registro.");
+                }
+            })
+            .catch(err => {
+                console.error("Error crítico de conectividad:", err);
+                alert("No se pudo conectar con el servidor del Palacio del Deporte. Verifique el estado del túnel en Proxmox.");
+            });
+        }
+
+        // Mapea la información a la estructura limpia y genera la descarga del PDF
+        function generarPDF(fotoRuta) {
+            const nombre = document.getElementById('reg-nombre').value;
+            
+            document.getElementById('pdf-nombre').innerText = nombre;
+            document.getElementById('pdf-comunidad').innerText = document.getElementById('reg-comunidad').value;
+            document.getElementById('pdf-deporte').innerText = document.getElementById('reg-deporte').value;
+            document.getElementById('pdf-categoria').innerText = document.getElementById('reg-categoria').value;
+            document.getElementById('pdf-delegado').innerText = document.getElementById('reg-delegado').value;
+            document.getElementById('pdf-fecha').innerText = new Date().toLocaleDateString();
+
+            const imgPreview = document.getElementById('pdf-foto-preview');
+            const placeholder = document.getElementById('pdf-foto-placeholder');
+
+            if(fotoRuta) {
+                imgPreview.src = `${URL_SERVIDOR}${fotoRuta}`;
+                imgPreview.classList.remove('hidden');
+                placeholder.classList.add('hidden');
+            }
+
+            const elementoPDF = document.getElementById('plantilla-pdf');
+            elementoPDF.classList.remove('hidden'); // Mostrar temporalmente para render
+
+            const opcionesConfig = {
+                margin:       1,
+                filename:     `Ficha_JuegosComunales_${nombre.replace(/\s+/g, '_')}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'cm', format: 'letter', orientation: 'portrait' }
+            };
+
+            // Ejecutar la renderización y descarga del documento
+            html2pdf().set(opcionesConfig).from(elementoPDF).save().then(() => {
+                elementoPDF.classList.add('hidden'); // Re-ocultar
+                imgPreview.classList.add('hidden');
+                placeholder.classList.remove('hidden');
+            });
+        }
+
+        // Valida el acceso administrativo y descarga los datos reales desde SQLite
+        function verificarAcceso() {
+            const pass = document.getElementById('admin-pass').value;
+            if (pass === "palacio2026") {
+                document.getElementById('admin-login').classList.add('hidden');
+                document.getElementById('admin-panel').classList.remove('hidden');
+                
+                // Solicitar la lista completa al contenedor Proxmox
+                fetch(`${URL_SERVIDOR}/api/atletas`)
+                .then(res => res.json())
+                .then(atletas => {
+                    const cuerpoTabla = document.getElementById('tabla-cuerpo');
+                    cuerpoTabla.innerHTML = ""; // Limpiar estados iniciales
+                    
+                    if(atletas.length === 0) {
+                        cuerpoTabla.innerHTML = `<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">No hay atletas registrados hasta el momento.</td></tr>`;
+                        return;
+                    }
+
+                    atletas.forEach(atleta => {
+                        cuerpoTabla.innerHTML += `
+                            <tr class="hover:bg-gray-50 transition">
+                                <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">${atleta.nombre}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">${atleta.comunidad}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">${atleta.deporte}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">${atleta.categoria}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-600">${atleta.delegado}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <a href="${URL_SERVIDOR}${atleta.foto_ruta}" target="_blank" class="text-indigo-600 hover:text-indigo-900 underline font-semibold flex items-center gap-1">
+                                        Ver Foto Archivo
+                                    </a>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                })
+                .catch(err => {
+                    console.error("Error al consultar administración:", err);
+                    alert("Error al extraer la información del servidor de Proxmox.");
+                });
+            } else {
+                alert("Contraseña incorrecta de administración.");
+            }
+        }
+
+        // Exportación directa a Excel
+        function exportarExcel() {
+            const tabla = document.getElementById('tabla-registros');
+            const libroTrabajo = XLSX.utils.table_to_book(tabla, { sheet: "Atletas Inscritos" });
+            XLSX.writeFile(libroTrabajo, "Listado_Oficial_Juegos_Comunales_Palacio.xlsx");
+        }
+    </script>
+</body>
+</html>
