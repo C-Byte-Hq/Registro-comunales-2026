@@ -20,8 +20,9 @@
         </div>
     </nav>
 
-    <main class="max-w-6xl mx-auto p-4 sm:p-6 mt-4">
+    <main class="max-w-7xl mx-auto p-4 sm:p-6 mt-4">
 
+        <!-- VISTA DE REGISTRO PÚBLICO -->
         <section id="vista-registro" class="bg-white p-6 rounded-lg shadow border">
             <h2 class="text-2xl font-bold text-gray-800 mb-4 border-b pb-2 text-indigo-700">Registro por Comuna y Disciplina</h2>
             
@@ -55,9 +56,15 @@
                             <option value="2016 - 2017">2016 - 2017</option>
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700">Nombre del Delegado</label>
-                        <input type="text" id="ins-delegado" required placeholder="Nombre del responsable" class="mt-1 block w-full rounded border-gray-300 p-2 border focus:ring-indigo-500">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700">Nombre del Delegado</label>
+                            <input type="text" id="ins-delegado" required placeholder="Nombre del responsable" class="mt-1 block w-full rounded border-gray-300 p-2 border focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700">Teléfono Delegado</label>
+                            <input type="tel" id="ins-tel-delegado" required placeholder="Ej: 0412-1234567" class="mt-1 block w-full rounded border-gray-300 p-2 border focus:ring-indigo-500">
+                        </div>
                     </div>
                 </div>
 
@@ -68,9 +75,17 @@
                     </div>
                     
                     <div id="contenedor-atletas" class="space-y-3">
-                        <div class="fila-atleta grid grid-cols-1 sm:grid-cols-3 gap-2 p-3 bg-indigo-50/50 rounded border items-center">
-                            <input type="text" placeholder="Cédula de Identidad" required class="atleta-cedula p-2 border rounded w-full bg-white">
-                            <input type="text" placeholder="Nombre Completo del Atleta" required class="atleta-nombre p-2 border rounded w-full col-span-2 bg-white">
+                        <div class="fila-atleta p-4 bg-indigo-50/50 rounded border space-y-3">
+                            <div class="grid grid-cols-1 sm:grid-cols-4 gap-2">
+                                <input type="text" placeholder="Cédula de Identidad" required class="atleta-cedula p-2 border rounded w-full bg-white text-sm">
+                                <input type="text" placeholder="Nombre Completo del Atleta" required class="atleta-nombre p-2 border rounded w-full sm:col-span-2 bg-white text-sm">
+                                <input type="number" placeholder="Edad" required min="1" max="99" class="atleta-edad p-2 border rounded w-full bg-white text-sm">
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                <input type="tel" placeholder="Teléfono del Representante" required class="atleta-tel-rep p-2 border rounded w-full bg-white text-sm">
+                                <input type="text" placeholder="Dirección de Habitación" required class="atleta-direccion p-2 border rounded w-full bg-white text-sm">
+                                <input type="text" placeholder="¿Dónde estudia actualmente?" required class="atleta-colegio p-2 border rounded w-full bg-white text-sm">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -81,6 +96,7 @@
             </form>
         </section>
 
+        <!-- VISTA DE CONTROL EXCLUSIVA (PALACIO DEL DEPORTE) -->
         <section id="vista-admin" class="hidden bg-white p-6 rounded-lg shadow border">
             <div id="admin-login" class="max-w-sm mx-auto text-center space-y-3 py-6">
                 <h2 class="text-xl font-bold">Acceso Control Personal Palacio del Deporte</h2>
@@ -90,18 +106,21 @@
 
             <div id="admin-panel" class="hidden space-y-4">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b pb-3 gap-2">
-                    <h2 class="text-xl font-bold text-indigo-700">Listado Maestro de Inscripciones</h2>
-                    <button onclick="exportarExcelFiltrado()" class="bg-green-600 text-white px-4 py-2 rounded text-sm font-semibold hover:bg-green-700">Exportar Vista Actual a Excel</button>
+                    <div>
+                        <h2 class="text-xl font-bold text-indigo-700">Panel Único de Control Comunal</h2>
+                        <p class="text-xs text-gray-500">Visualización de nóminas extendidas, reimpresión de fichas y bajas del sistema.</p>
+                    </div>
+                    <button onclick="exportarExcelFiltrado()" class="bg-green-600 text-white px-4 py-2 rounded text-sm font-semibold hover:bg-green-700 shadow">Exportar Vista Actual a Excel</button>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-gray-50 p-4 rounded border">
                     <div>
                         <label class="block text-xs font-bold uppercase text-gray-500">Filtrar por Comuna / Sector</label>
-                        <select id="filtro-comuna" onchange="aplicarFiltros()" class="mt-1 block w-full p-2 border rounded bg-white"><option value="">Todas las comunas</option></select>
+                        <select id="filtro-comuna" onchange="aplicarFiltros()" class="mt-1 block w-full p-2 border rounded bg-white text-sm"><option value="">Todas las comunas</option></select>
                     </div>
                     <div>
                         <label class="block text-xs font-bold uppercase text-gray-500">Filtrar por Disciplina</label>
-                        <select id="filtro-disciplina" onchange="aplicarFiltros()" class="mt-1 block w-full p-2 border rounded bg-white">
+                        <select id="filtro-disciplina" onchange="aplicarFiltros()" class="mt-1 block w-full p-2 border rounded bg-white text-sm">
                             <option value="">Todas las disciplinas</option>
                             <option value="Kickimbol">Kickimbol</option>
                             <option value="Béisbol five">Béisbol five</option>
@@ -117,24 +136,42 @@
                     </div>
                 </div>
 
+                <!-- TABLA MAESTRA CONSOLIDADA CON BOTONES DE ACCIÓN DIRECTA -->
                 <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y border text-sm" id="tabla-maestra-juegos">
-                        <thead class="bg-gray-100 font-semibold text-gray-700">
+                    <table class="min-w-full divide-y border text-xs text-left bg-white" id="tabla-control-palacio">
+                        <thead class="bg-gray-100 font-bold text-gray-700 uppercase tracking-wider">
                             <tr>
-                                <th class="px-4 py-2.5 text-left border-b">Comuna</th>
-                                <th class="px-4 py-2.5 text-left border-b">Disciplina</th>
-                                <th class="px-4 py-2.5 text-left border-b">Año Cat.</th>
-                                <th class="px-4 py-2.5 text-left border-b">Delegado</th>
-                                <th class="px-4 py-2.5 text-left border-b">Atletas Inscritos (Nómina)</th>
+                                <th class="p-3 border">Comuna / Sector</th>
+                                <th class="p-3 border">Disciplina</th>
+                                <th class="p-3 border text-center">Año Cat.</th>
+                                <th class="p-3 border">Delegado e Historial Completo de Atletas</th>
+                                <th class="p-3 border text-center style-acciones">Acciones Permitidas</th>
                             </tr>
                         </thead>
-                        <tbody id="tabla-cuerpo-comunal" class="divide-y bg-white"></tbody>
+                        <tbody id="cuerpo-maestro-palacio" class="divide-y">
+                            <!-- Inyección dinámica -->
+                        </tbody>
                     </table>
                 </div>
+
+                <!-- Estructura oculta utilizada estrictamente para el mapeo plano hacia el archivo Excel -->
+                <div class="hidden">
+                    <table id="tabla-maestra-juegos">
+                        <thead>
+                            <tr>
+                                <th>Comuna</th><th>Disciplina</th><th>Año Cat.</th><th>Delegado</th><th>Tlf Delegado</th>
+                                <th>C.I Atleta</th><th>Nombre Atleta</th><th>Edad</th><th>Tlf Representante</th><th>Dirección Atleta</th><th>Lugar de Estudio</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-cuerpo-comunal"></tbody>
+                    </table>
+                </div>
+
             </div>
         </section>
     </main>
 
+    <!-- FICHA OFICIAL PDF (Limpia para firmas) -->
     <div id="plantilla-pdf-comunal" class="hidden p-10 bg-white text-black font-sans" style="width: 790px;">
         <div class="text-center border-b-2 border-gray-800 pb-2 mb-4">
             <h1 class="text-2xl font-bold uppercase">Ficha de Inscripción Colectiva</h1>
@@ -161,7 +198,6 @@
     </div>
 
     <script>
-        // Sincronizado con tu túnel activo de Cloudflare
         const URL_SERVIDOR = "https://outcome-member-outputs-recipients.trycloudflare.com";
         
         let cacheDatosInscritos = [];
@@ -176,11 +212,19 @@
         function agregarFilaAtleta() {
             const contenedor = document.getElementById('contenedor-atletas');
             const nuevaFila = document.createElement('div');
-            nuevaFila.className = "fila-atleta grid grid-cols-1 sm:grid-cols-3 gap-2 p-3 bg-indigo-50/50 rounded border items-center";
+            nuevaFila.className = "fila-atleta p-4 bg-indigo-50/50 rounded border space-y-3 relative";
             nuevaFila.innerHTML = `
-                <input type="text" placeholder="Cédula de Identidad" required class="atleta-cedula p-2 border rounded w-full bg-white">
-                <input type="text" placeholder="Nombre Completo del Atleta" required class="atleta-nombre p-2 border rounded w-full sm:col-span-1.5 bg-white">
-                <button type="button" onclick="this.parentElement.remove()" class="bg-red-500 text-white px-2 py-1.5 text-xs rounded font-bold hover:bg-red-600 transition w-full sm:w-auto">Quitar</button>
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-2">
+                    <input type="text" placeholder="Cédula de Identidad" required class="atleta-cedula p-2 border rounded w-full bg-white text-sm">
+                    <input type="text" placeholder="Nombre Completo del Atleta" required class="atleta-nombre p-2 border rounded w-full sm:col-span-2 bg-white text-sm">
+                    <input type="number" placeholder="Edad" required min="1" max="99" class="atleta-edad p-2 border rounded w-full bg-white text-sm">
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <input type="tel" placeholder="Teléfono del Representante" required class="atleta-tel-rep p-2 border rounded w-full bg-white text-sm">
+                    <input type="text" placeholder="Dirección de Habitación" required class="atleta-direccion p-2 border rounded w-full bg-white text-sm">
+                    <input type="text" placeholder="¿Dónde estudia actualmente?" required class="atleta-colegio p-2 border rounded w-full bg-white text-sm">
+                </div>
+                <button type="button" onclick="this.parentElement.remove()" class="bg-red-500 text-white px-3 py-1 text-xs rounded font-bold hover:bg-red-600 transition absolute top-2 right-2 sm:static sm:mt-2">Quitar</button>
             `;
             contenedor.appendChild(nuevaFila);
         }
@@ -193,7 +237,11 @@
             filas.forEach(fila => {
                 listaAtletas.push({
                     cedula: fila.querySelector('.atleta-cedula').value,
-                    nombre: fila.querySelector('.atleta-nombre').value
+                    nombre: fila.querySelector('.atleta-nombre').value,
+                    edad: fila.querySelector('.atleta-edad').value,
+                    telRep: fila.querySelector('.atleta-tel-rep').value,
+                    direccion: fila.querySelector('.atleta-direccion').value,
+                    colegio: fila.querySelector('.atleta-colegio').value
                 });
             });
 
@@ -202,6 +250,7 @@
                 disciplina: document.getElementById('ins-disciplina').value,
                 categoria: document.getElementById('ins-categoria').value,
                 delegado: document.getElementById('ins-delegado').value,
+                telDelegado: document.getElementById('ins-tel-delegado').value,
                 atletas: listaAtletas
             };
 
@@ -213,19 +262,27 @@
             .then(res => res.json())
             .then(data => {
                 descargarFichaPDF(datosPayload);
-                alert("¡Inscripción de la Comuna guardada exitosamente en el Palacio!");
+                alert("¡Inscripción procesada con éxito!");
                 document.getElementById('form-comunal').reset();
                 
                 document.getElementById('contenedor-atletas').innerHTML = `
-                    <div class="fila-atleta grid grid-cols-1 sm:grid-cols-3 gap-2 p-3 bg-indigo-50/50 rounded border items-center">
-                        <input type="text" placeholder="Cédula de Identidad" required class="atleta-cedula p-2 border rounded w-full bg-white">
-                        <input type="text" placeholder="Nombre Completo del Atleta" required class="atleta-nombre p-2 border rounded w-full col-span-2 bg-white">
+                    <div class="fila-atleta p-4 bg-indigo-50/50 rounded border space-y-3">
+                        <div class="grid grid-cols-1 sm:grid-cols-4 gap-2">
+                            <input type="text" placeholder="Cédula de Identidad" required class="atleta-cedula p-2 border rounded w-full bg-white text-sm">
+                            <input type="text" placeholder="Nombre Completo del Atleta" required class="atleta-nombre p-2 border rounded w-full sm:col-span-2 bg-white text-sm">
+                            <input type="number" placeholder="Edad" required min="1" max="99" class="atleta-edad p-2 border rounded w-full bg-white text-sm">
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                            <input type="tel" placeholder="Teléfono del Representante" required class="atleta-tel-rep p-2 border rounded w-full bg-white text-sm">
+                            <input type="text" placeholder="Dirección de Habitación" required class="atleta-direccion p-2 border rounded w-full bg-white text-sm">
+                            <input type="text" placeholder="¿Dónde estudia actualmente?" required class="atleta-colegio p-2 border rounded w-full bg-white text-sm">
+                        </div>
                     </div>
                 `;
             })
             .catch(err => {
                 console.error(err);
-                alert("Error al conectar con Proxmox. Asegúrate de que el backend y el servicio del túnel estén corriendo.");
+                alert("Error al guardar datos.");
             });
         }
 
@@ -239,7 +296,7 @@
             const tbody = document.getElementById('pdf-tabla-atletas');
             tbody.innerHTML = "";
             datos.atletas.forEach((atleta, index) => {
-                tbody.innerHTML += `<tr><td class="p-1 border">${index+1}</td><td class="p-1 border">${atleta.cedula}</td><td class="p-1 border">${atleta.nombre}</td></tr>`;
+                tbody.innerHTML += `<tr><td class="p-1.5 border text-center">${index+1}</td><td class="p-1.5 border">${atleta.cedula}</td><td class="p-1.5 border font-medium">${atleta.nombre}</td></tr>`;
             });
 
             const elem = document.getElementById('plantilla-pdf-comunal');
@@ -271,9 +328,9 @@
                     selectorComunas.innerHTML += `<option value="${c}">${c}</option>`;
                 });
 
-                renderizarTabla(data);
+                renderizarPanelConsolidado(data);
             })
-            .catch(err => console.error("Error al cargar datos desde el backend:", err));
+            .catch(err => console.error("Error al cargar datos:", err));
         }
 
         function aplicarFiltros() {
@@ -286,34 +343,101 @@
                 return cumpleComuna && cumpleDisciplina;
             });
 
-            renderizarTabla(datosFiltrados);
+            renderizarPanelConsolidado(datosFiltrados);
         }
 
-        function renderizarTabla(datos) {
-            const tbody = document.getElementById('tabla-cuerpo-comunal');
-            tbody.innerHTML = "";
+        function renderizarPanelConsolidado(datos) {
+            const tbodyExcel = document.getElementById('tabla-cuerpo-comunal');
+            const tbodyVisual = document.getElementById('cuerpo-maestro-palacio');
+            
+            tbodyExcel.innerHTML = "";
+            tbodyVisual.innerHTML = "";
+
             if(datos.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-400">Ningún registro coincide con los filtros aplicados.</td></tr>`;
+                tbodyVisual.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-400">Ningún registro coincide con los criterios de búsqueda.</td></tr>`;
                 return;
             }
-            datos.forEach(row => {
-                const listadoHTML = row.atletas.map(a => `• C.I: ${a.cedula} - ${a.nombre}`).join('<br>');
-                tbody.innerHTML += `
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-4 py-2 border-b font-medium text-gray-900">${row.comuna}</td>
-                        <td class="px-4 py-2 border-b text-gray-600">${row.disciplina}</td>
-                        <td class="px-4 py-2 border-b text-gray-600">${row.categoria}</td>
-                        <td class="px-4 py-2 border-b text-gray-600">${row.delegado}</td>
-                        <td class="px-4 py-2 border-b text-xs text-gray-700 font-mono leading-relaxed">${listadoHTML}</td>
+
+            datos.forEach((row, index) => {
+                const tlfDel = row.telDelegado || "N/R";
+                
+                // Mapeo visual dinámico de los atletas agrupados por equipo
+                const bloqueAtletasHTML = row.atletas.map(a => 
+                    `<div class="py-1 border-b last:border-0 text-gray-600">
+                        • <span class="font-semibold text-gray-800">${a.nombre}</span> (C.I: ${a.cedula} - Edad: ${a.edad || 'N/R'}) 
+                        | <span class="text-indigo-600 font-medium">Rep:</span> ${a.telRep || 'N/R'} 
+                        | <span class="text-indigo-600 font-medium">Estudio:</span> ${a.colegio || 'N/R'}
+                        | <span class="text-indigo-600 font-medium">Dir:</span> ${a.direccion || 'N/R'}
+                     </div>`
+                ).join("");
+
+                // Inyección de fila en la tabla principal con los botones "Descargar Ficha" y "Borrar" integrados al lado
+                tbodyVisual.innerHTML += `
+                    <tr class="hover:bg-gray-50/50">
+                        <td class="p-3 border font-bold text-gray-900 align-top">${row.comuna}</td>
+                        <td class="p-3 border text-gray-700 font-medium align-top">${row.disciplina}</td>
+                        <td class="p-3 border text-center font-mono align-top">${row.categoria}</td>
+                        <td class="p-3 border align-top">
+                            <div class="mb-2 bg-gray-100 p-2 rounded border">
+                                <strong>Delegado Responsable:</strong> ${row.delegado} — <span class="font-mono text-indigo-700">${tlfDel}</span>
+                            </div>
+                            <div class="bg-white p-2 rounded border max-h-40 overflow-y-auto space-y-1">
+                                ${bloqueAtletasHTML}
+                            </div>
+                        </td>
+                        <td class="p-3 border text-center align-top space-y-2 whitespace-nowrap">
+                            <button onclick='reimprimirFicha(${index}, ${JSON.stringify(datos)})' class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-1.5 px-3 rounded shadow transition block text-[11px]">
+                                📥 Ficha PDF
+                            </button>
+                            <button onclick='eliminarInscripcion("${row.comuna}", "${row.disciplina}", "${row.categoria}")' class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-1.5 px-3 rounded shadow transition block text-[11px]">
+                                ❌ Eliminar
+                            </button>
+                        </td>
                     </tr>
                 `;
+
+                // Alimentación paralela del Excel extendido de 11 columnas
+                row.atletas.forEach(atleta => {
+                    tbodyExcel.innerHTML += `
+                        <tr>
+                            <td>${row.comuna}</td><td>${row.disciplina}</td><td>${row.categoria}</td>
+                            <td>${row.delegado}</td><td>${tlfDel}</td><td>${atleta.cedula}</td>
+                            <td>${atleta.nombre}</td><td>${atleta.edad || "N/R"}</td>
+                            <td>${atleta.telRep || "N/R"}</td><td>${atleta.direccion || "N/R"}</td><td>${atleta.colegio || "N/R"}</td>
+                        </tr>
+                    `;
+                });
             });
+        }
+
+        function reimprimirFicha(indice, origenDatos) {
+            descargarFichaPDF(origenDatos[indice]);
+        }
+
+        function eliminarInscripcion(comuna, disciplina, categoria) {
+            if(confirm(`¿Está completamente seguro de que desea eliminar permanentemente la inscripción de la ${comuna} en la disciplina ${disciplina} (${categoria})?`)) {
+                
+                fetch(`${URL_SERVIDOR}/api/eliminar-comuna`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ comuna, disciplina, categoria })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    alert("Inscripción eliminada correctamente del servidor.");
+                    cargarDatosDesdeServidor(); // Recarga y limpia la tabla al instante
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Error de comunicación. Asegúrate de que el backend soporte la ruta de eliminación.");
+                });
+            }
         }
 
         function exportarExcelFiltrado() {
             const tabla = document.getElementById('tabla-maestra-juegos');
-            const wb = XLSX.utils.table_to_book(tabla, { sheet: "Registros Filtrados" });
-            XLSX.writeFile(wb, "Reporte_Juegos_Comunales_Filtrado.xlsx");
+            const wb = XLSX.utils.table_to_book(tabla, { sheet: "Nómina Completa Palacio" });
+            XLSX.writeFile(wb, "Control_General_Atletas_Juegos_Comunales.xlsx");
         }
     </script>
 </body>
