@@ -73,10 +73,6 @@
                             <input type="tel" id="ins-tel-delegado" required placeholder="Ej: 0412-1234567" class="mt-1 block w-full rounded border-gray-300 p-2 border focus:ring-indigo-500">
                         </div>
                     </div>
-                    <div class="md:col-span-2">
-                        <label class="block text-sm font-semibold text-gray-700">Teléfono de Contacto (Emergencia)</label>
-                        <input type="tel" id="ins-tel-contacto" required placeholder="Ej: 0424-7654321" class="mt-1 block w-full rounded border-gray-300 p-2 border focus:ring-indigo-500">
-                    </div>
                 </div>
 
                 <div>
@@ -175,7 +171,7 @@
                     <table id="tabla-maestra-juegos">
                         <thead>
                             <tr>
-                                <th>Comuna</th><th>Disciplina</th><th>Año Cat.</th><th>Delegado</th><th>Cédula Del.</th><th>Tlf Delegado</th><th>Tlf Contacto</th>
+                                <th>Comuna</th><th>Disciplina</th><th>Año Cat.</th><th>Delegado</th><th>Cédula Del.</th><th>Tlf Delegado</th>
                                 <th>C.I Atleta</th><th>Nombre Atleta</th><th>Edad</th><th>Tlf Representante</th><th>Dirección Atleta</th><th>Lugar de Estudio</th>
                             </tr>
                         </thead>
@@ -199,7 +195,6 @@
             <p><strong>Delegado:</strong> <span id="pdf-delegado"></span></p>
             <p><strong>Cédula Delegado:</strong> <span id="pdf-cedula-delegado"></span></p>
             <p><strong>Teléfono Delegado:</strong> <span id="pdf-tel-delegado"></span></p>
-            <p><strong>Teléfono Contacto:</strong> <span id="pdf-tel-contacto"></span></p>
             <p class="col-span-2"><strong>Fecha Emisión:</strong> <span id="pdf-fecha"></span></p>
         </div>
         <h3 class="font-bold text-sm uppercase mb-1 border-b">Nómina Avalada de Atletas</h3>
@@ -277,7 +272,6 @@
                 delegado: document.getElementById('ins-delegado').value,
                 cedulaDelegado: document.getElementById('ins-cedula-delegado').value,
                 telDelegado: document.getElementById('ins-tel-delegado').value,
-                telefonoContacto: document.getElementById('ins-tel-contacto').value,
                 atletas: listaAtletas
             };
 
@@ -298,7 +292,7 @@
             .then(res => res.json())
             .then(data => {
                 descargarFichaPDF(datosPayload);
-                alert(modoEdicion ? "¡Nómina modificada con éxito en el archivo plano!" : "¡Inscripción procesada con éxito!");
+                alert(modoEdicion ? "¡Nómina modificada con éxito!" : "¡Inscripción procesada con éxito!");
                 
                 if (modoEdicion) {
                     cancelarModificacion();
@@ -341,7 +335,6 @@
             document.getElementById('pdf-delegado').innerText = datos.delegado;
             document.getElementById('pdf-cedula-delegado').innerText = datos.cedulaDelegado || 'N/R';
             document.getElementById('pdf-tel-delegado').innerText = datos.telDelegado;
-            document.getElementById('pdf-tel-contacto').innerText = datos.telefonoContacto || 'N/R';
             document.getElementById('pdf-fecha').innerText = new Date().toLocaleDateString();
 
             const tbody = document.getElementById('pdf-tabla-atletas');
@@ -416,7 +409,6 @@
 
             datos.forEach((row, index) => {
                 const tlfDel = row.telDelegado || "N/R";
-                const tlfCont = row.telefonoContacto || "N/R";
                 const cedDel = row.cedulaDelegado || "N/R";
                 
                 const bloqueAtletasHTML = row.atletas.map(a => 
@@ -435,7 +427,7 @@
                         <td class="p-3 border text-center font-mono align-top">${row.categoria}</td>
                         <td class="p-3 border align-top">
                             <div class="mb-2 bg-gray-100 p-2 rounded border">
-                                <strong>Delegado:</strong> ${row.delegado} — C.I: <span class="font-semibold text-gray-800">${cedDel}</span> — Tlf: <span class="font-mono text-indigo-700">${tlfDel}</span> — Contacto: <span class="font-mono text-gray-600">${tlfCont}</span>
+                                <strong>Delegado:</strong> ${row.delegado} — C.I: <span class="font-semibold text-gray-800">${cedDel}</span> — Tlf: <span class="font-mono text-indigo-700">${tlfDel}</span>
                             </div>
                             <div class="bg-white p-2 rounded border max-h-40 overflow-y-auto space-y-1">
                                 ${bloqueAtletasHTML}
@@ -459,7 +451,7 @@
                     tbodyExcel.innerHTML += `
                         <tr>
                             <td>${row.comuna}</td><td>${row.disciplina}</td><td>${row.categoria}</td>
-                            <td>${row.delegado}</td><td>${cedDel}</td><td>${tlfDel}</td><td>${tlfCont}</td><td>${atleta.cedula}</td>
+                            <td>${row.delegado}</td><td>${cedDel}</td><td>${tlfDel}</td><td>${atleta.cedula}</td>
                             <td>${atleta.nombre}</td><td>${atleta.edad || "N/R"}</td>
                             <td>${atleta.telRep || "N/R"}</td><td>${atleta.direccion || "N/R"}</td><td>${atleta.colegio || "N/R"}</td>
                         </tr>
@@ -470,18 +462,15 @@
 
         function cargarParaModificar(item) {
             modoEdicion = true;
-            registroOriginal = { comuna: item.comuna, disciplina: item.disciplina, categoria: item.categoria };
+            registroOriginal = { comuna: item.comuna, disciplina: item.disciplina, category: item.categoria };
 
-            // Inyectar datos en las cabeceras
             document.getElementById('ins-comuna').value = item.comuna;
             document.getElementById('ins-disciplina').value = item.disciplina;
             document.getElementById('ins-categoria').value = item.categoria;
             document.getElementById('ins-delegado').value = item.delegado;
             document.getElementById('ins-cedula-delegado').value = item.cedulaDelegado || '';
             document.getElementById('ins-tel-delegado').value = item.telDelegado;
-            document.getElementById('ins-tel-contacto').value = item.telefonoContacto || '';
 
-            // Limpiar e inyectar atletas
             const contenedor = document.getElementById('contenedor-atletas');
             contenedor.innerHTML = "";
             item.atletas.forEach(atleta => {
