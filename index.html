@@ -7,24 +7,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
         h2 { text-align: center; }
         .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        label { display: block; margin-bottom: 5px; }
         input, select { width: 100%; padding: 8px; box-sizing: border-box; }
         .atleta-row { display: flex; gap: 10px; margin-bottom: 10px; }
         .atleta-row input { flex: 1; }
-        .atleta-row input.edad-input { flex: 0.3; }
-        button { padding: 10px 15px; background: blue; color: white; border: none; cursor: pointer; font-weight: bold; }
+        button { padding: 10px 15px; background: blue; color: white; border: none; cursor: pointer; }
         button:hover { background: darkblue; }
-        .btn-danger { background: red; }
-        .btn-danger:hover { background: darkred; }
-        .btn-warning { background: orange; color: black; margin-right: 5px; }
-        .btn-warning:hover { background: darkorange; }
         .admin-section { margin-top: 40px; padding: 20px; border-top: 2px solid #ccc; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
         th { background: #eee; }
+        /* Estilos específicos para los nuevos botones y alertas de modificación */
+        .btn-danger { background: red; }
+        .btn-danger:hover { background: darkred; }
+        .btn-warning { background: orange; color: black; margin-right: 5px; padding: 5px 10px; }
+        .btn-warning:hover { background: darkorange; }
         .alerta-edicion { background: #fff3cd; color: #856404; padding: 10px; border: 1px solid #ffeeba; margin-bottom: 15px; text-align: center; font-weight: bold; display: none; }
     </style>
 </head>
@@ -33,6 +33,7 @@
 <div class="container">
     <h2>Inscripción - Juegos Comunales 2025</h2>
     
+    <!-- Alerta visual de edición en tu estilo discreto -->
     <div id="alerta-edicion" class="alerta-edicion">
         🔄 MODIFICANDO REGISTRO SELECCIONADO
     </div>
@@ -48,15 +49,16 @@
         </div>
         <div class="form-group">
             <label>Cédula del Delegado:</label>
-            <input type="text" id="cedula" required placeholder="V-00000000">
+            <input type="text" id="cedula" required>
         </div>
+        <!-- NUEVOS CAMPOS SOLICITADOS -->
         <div class="form-group">
             <label>Teléfono del Delegado:</label>
-            <input type="tel" id="telefonoDelegado" required placeholder="Ej. 0412-1234567">
+            <input type="tel" id="telefonoDelegado" required>
         </div>
         <div class="form-group">
             <label>Teléfono de Contacto (Emergencia):</label>
-            <input type="tel" id="telefonoContacto" required placeholder="Ej. 0424-7654321">
+            <input type="tel" id="telefonoContacto" required>
         </div>
         <div class="form-group">
             <label>Disciplina:</label>
@@ -76,25 +78,25 @@
             </select>
         </div>
 
-        <h3>Atletas (Máximo 12)</h3>
+        <h3>Atletas</h3>
         <div id="atletasContainer"></div>
         <button type="button" onclick="agregarAtleta()">+ Agregar Atleta</button>
         <br><br>
-        
         <button type="submit" id="btn-registrar">Finalizar Registro</button>
         <button type="button" id="btn-cancelar" class="btn-danger" style="display:none; margin-top:5px; width:100%;" onclick="cancelarModificacion()">Cancelar Modificación</button>
     </form>
 
     <div class="admin-section">
-        <h3>Panel Personal Palacio del Deporte</h3>
+        <h3>Panel Administrador</h3>
         <div id="loginAdmin">
-            <input type="password" id="passAdmin" placeholder="Contraseña de administración">
-            <button type="button" onclick="verificarPassword()">Acceder</button>
+            <input type="password" id="passAdmin" placeholder="Contraseña">
+            <button onclick="verificarPassword()">Acceder</button>
         </div>
 
-        <div id="panelAdmin" style="display: none; margin-top: 20px;">
-            <h4>Registros Guardados</h4>
+        <div id="panelAdmin" style="display: none;">
+            <h4>Registros</h4>
             
+            <!-- BUSCADOR POR CÉDULA DEL DELEGADO -->
             <div class="form-group">
                 <input type="text" id="buscador-cedula" placeholder="🔍 Buscar por Cédula del Delegado..." onkeyup="filtrarPorCedula()">
             </div>
@@ -103,9 +105,8 @@
                 <thead>
                     <tr>
                         <th>Comuna</th>
-                        <th>Delegado (C.I.)</th>
-                        <th>Teléfonos</th>
-                        <th>Deporte (Cat.)</th>
+                        <th>Delegado</th>
+                        <th>Deporte</th>
                         <th>Atletas</th>
                         <th>Acciones</th>
                     </tr>
@@ -122,11 +123,11 @@
     let modoEdicion = false;
     let registroOriginal = { comuna: "", disciplina: "", categoria: "" };
 
-    // Iniciar con 3 filas por defecto
     window.onload = function() {
         for (let i = 0; i < 3; i++) agregarAtleta();
     };
 
+    // Fila de atletas original modificada sutilmente para incluir la edad
     function agregarAtleta(datosAtleta = null) {
         const container = document.getElementById('atletasContainer');
         if (container.children.length >= 12) return;
@@ -134,9 +135,9 @@
         const div = document.createElement('div');
         div.className = 'atleta-row';
         div.innerHTML = `
-            <input type="text" placeholder="Nombre del Atleta" class="atleta-nombre" required value="${datosAtleta ? datosAtleta.nombre : ''}">
+            <input type="text" placeholder="Nombre" class="atleta-nombre" required value="${datosAtleta ? datosAtleta.nombre : ''}">
             <input type="text" placeholder="Cédula" class="atleta-cedula" required value="${datosAtleta ? datosAtleta.cedula : ''}">
-            <input type="number" placeholder="Edad" class="atleta-edad edad-input" required min="5" max="99" value="${datosAtleta ? datosAtleta.edad : ''}">
+            <input type="number" placeholder="Edad" class="atleta-edad" style="width: 70px;" required value="${datosAtleta ? datosAtleta.edad : ''}">
         `;
         container.appendChild(div);
     }
@@ -161,11 +162,11 @@
     async function enviarDatos(e) {
         e.preventDefault();
         const payload = {
-            comuna: document.getElementById('comuna').value.trim(),
-            delegado: document.getElementById('delegado').value.trim(),
-            cedulaDelegado: document.getElementById('cedula').value.trim(),
-            telefonoDelegado: document.getElementById('telefonoDelegado').value.trim(),
-            telefonoContacto: document.getElementById('telefonoContacto').value.trim(),
+            comuna: document.getElementById('comuna').value,
+            delegado: document.getElementById('delegado').value,
+            cedulaDelegado: document.getElementById('cedula').value,
+            telefonoDelegado: document.getElementById('telefonoDelegado').value,
+            telefonoContacto: document.getElementById('telefonoContacto').value,
             disciplina: document.getElementById('disciplina').value,
             categoria: document.getElementById('categoria').value,
             atletas: obtenerAtletas()
@@ -188,7 +189,7 @@
             });
 
             if (res.ok) {
-                alert(modoEdicion ? "¡Registro modificado correctamente!" : "¡Datos guardados con éxito!");
+                alert(modoEdicion ? "¡Registro modificado con éxito!" : "¡Datos guardados!");
                 generarPDF(payload);
                 
                 if (modoEdicion) cancelarModificacion();
@@ -198,35 +199,33 @@
                     cargarRegistros();
                 }
             } else {
-                const err = await res.json();
-                alert("Error: " + err.error);
+                alert("Error al guardar");
             }
         } catch (error) {
             alert("Error al conectar con el servidor.");
         }
     }
 
+    // PDF con los nuevos campos añadidos al formato original
     function generarPDF(datos) {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
 
-        doc.setFontSize(16);
-        doc.text("Comprobante de Inscripción - Juegos Comunales 2025", 10, 20);
-        doc.setFontSize(12);
-        doc.text(`Comuna: ${datos.comuna}`, 10, 35);
-        doc.text(`Delegado: ${datos.delegado} (C.I: ${datos.cedulaDelegado})`, 10, 43);
-        doc.text(`Teléfono Delegado: ${datos.telefonoDelegado}`, 10, 51);
-        doc.text(`Teléfono Contacto: ${datos.telefonoContacto}`, 10, 59);
-        doc.text(`Disciplina: ${datos.disciplina} - Categoría: ${datos.categoria}`, 10, 67);
+        doc.text("Comprobante de Inscripción", 10, 10);
+        doc.text(`Comuna: ${datos.comuna}`, 10, 20);
+        doc.text(`Delegado: ${datos.delegado} (C.I: ${datos.cedulaDelegado})`, 10, 30);
+        doc.text(`Teléfono Delegado: ${datos.telefonoDelegado}`, 10, 40);
+        doc.text(`Teléfono Contacto: ${datos.telefonoContacto}`, 10, 50);
+        doc.text(`Disciplina: ${datos.disciplina} (${datos.categoria})`, 10, 60);
 
-        doc.text("Nómina de Atletas:", 10, 80);
-        let y = 88;
+        doc.text("Atletas:", 10, 75);
+        let y = 85;
         datos.atletas.forEach((atleta, i) => {
             doc.text(`${i + 1}. ${atleta.nombre} - C.I: ${atleta.cedula} - Edad: ${atleta.edad} años`, 10, y);
-            y += 8;
+            y += 10;
         });
 
-        doc.save(`Inscripcion_${datos.comuna}_${datos.disciplina}.pdf`);
+        doc.save(`Inscripcion_${datos.comuna}.pdf`);
     }
 
     function verificarPassword() {
@@ -252,17 +251,16 @@
                 tr.className = "fila-datos";
                 tr.setAttribute("data-cedula", item.cedulaDelegado.toLowerCase().trim());
 
-                let atletasStr = item.atletas.map(a => `• ${a.nombre} (${a.cedula}) - ${a.edad} añ.`).join('<br>');
+                let atletasStr = item.atletas.map(a => `${a.nombre} (${a.cedula}) - ${a.edad} años`).join(', ');
 
                 tr.innerHTML = `
                     <td>${item.comuna}</td>
-                    <td>${item.delegado}<br><small>C.I: ${item.cedulaDelegado}</small></td>
-                    <td><small>Telf: ${item.telefonoDelegado}<br>Emerg: ${item.telefonoContacto}</small></td>
-                    <td>${item.disciplina}<br><small>(${item.categoria})</small></td>
+                    <td>${item.delegado}<br><small>C.I: ${item.cedulaDelegado}<br>Telf: ${item.telefonoDelegado}</small></td>
+                    <td>${item.disciplina} (${item.categoria})</td>
                     <td>${atletasStr}</td>
                     <td>
                         <button class="btn-warning" onclick="cargarParaModificar(${JSON.stringify(item).replace(/"/g, '&quot;')})">Modificar</button>
-                        <button class="btn-danger" onclick="eliminarRegistro('${item.comuna}', '${item.disciplina}', '${item.categoria}')">Eliminar</button>
+                        <button class="btn-danger" onclick="eliminarRegistro('${item.comuna}', '${item.disciplina}', '${item.categoria}')">X</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -272,6 +270,7 @@
         }
     }
 
+    // Función del Buscador por Cédula en tiempo real
     function filtrarPorCedula() {
         const busqueda = document.getElementById("buscador-cedula").value.toLowerCase().trim();
         const filas = document.querySelectorAll(".fila-datos");
@@ -286,6 +285,7 @@
         });
     }
 
+    // Precarga el registro seleccionado en tu formulario original
     function cargarParaModificar(item) {
         modoEdicion = true;
         registroOriginal = { comuna: item.comuna, disciplina: item.disciplina, categoria: item.categoria };
@@ -331,7 +331,6 @@
                 body: JSON.stringify({ comuna, disciplina, categoria })
             });
             if (res.ok) {
-                alert("Registro eliminado");
                 cargarRegistros();
             }
         } catch (error) {
