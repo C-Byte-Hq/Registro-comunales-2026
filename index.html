@@ -3,229 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscripciones - Juegos Deportivos Comunales 2026</title>
-    <!-- Incluir librerías necesarias -->
+    <title>Inscripciones - Juegos Comunales 2025</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
-        :root {
-            --primary: #0056b3;
-            --success: #28a745;
-            --danger: #dc3545;
-            --warning: #ffc107;
-            --dark: #343a40;
-            --light: #f8f9fa;
-        }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; backgroundColor: var(--light); color: var(--dark); }
-        .container { max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h1, h2, h3 { text-align: center; color: var(--primary); }
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h2 { text-align: center; }
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        button { cursor: pointer; padding: 12px 20px; border: none; border-radius: 4px; font-weight: bold; transition: 0.3s; }
-        .btn-primary { background: var(--primary); color: white; width: 100%; margin-top: 20px; }
-        .btn-primary:hover { background: #004085; }
-        .btn-danger { background: var(--danger); color: white; padding: 6px 12px; font-size: 14px; }
-        .btn-danger:hover { background: #bd2130; }
-        .btn-warning { background: var(--warning); color: var(--dark); padding: 6px 12px; font-size: 14px; margin-right: 5px; }
-        .btn-warning:hover { background: #e0a800; }
-        .btn-dark { background: var(--dark); color: white; }
-        .atleta-row { display: grid; grid-template-columns: 2fr 1.5fr 1fr; gap: 10px; margin-bottom: 10px; align-items: center; }
-        .panel-login, .panel-admin { border: 2px dashed var(--primary); padding: 20px; margin-top: 40px; border-radius: 8px; background: #edf4fc; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        th { background-color: var(--primary); color: white; }
-        .badge-modo { background: var(--warning); padding: 5px 10px; border-radius: 4px; display: none; text-align: center; margin-bottom: 15px; font-weight: bold; }
-        .search-box { margin-bottom: 20px; position: relative; }
-        .search-box input { padding-left: 35px; border: 2px solid var(--primary); font-size: 16px; }
+        input, select { width: 100%; padding: 8px; box-sizing: border-box; }
+        .atleta-row { display: flex; gap: 10px; margin-bottom: 10px; }
+        .atleta-row input { flex: 1; }
+        .atleta-row input.edad-input { flex: 0.3; }
+        button { padding: 10px 15px; background: blue; color: white; border: none; cursor: pointer; font-weight: bold; }
+        button:hover { background: darkblue; }
+        .btn-danger { background: red; }
+        .btn-danger:hover { background: darkred; }
+        .btn-warning { background: orange; color: black; margin-right: 5px; }
+        .btn-warning:hover { background: darkorange; }
+        .admin-section { margin-top: 40px; padding: 20px; border-top: 2px solid #ccc; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background: #eee; }
+        .alerta-edicion { background: #fff3cd; color: #856404; padding: 10px; border: 1px solid #ffeeba; margin-bottom: 15px; text-align: center; font-weight: bold; display: none; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Juegos Deportivos Comunales 2026</h1>
-    <h2>Planilla Digital de Inscripción Colectiva</h2>
-    <hr>
-
-    <!-- Alerta de Modo Edición -->
-    <div id="alerta-edicion" class="badge-modo">
+    <h2>Inscripción - Juegos Comunales 2025</h2>
+    
+    <div id="alerta-edicion" class="alerta-edicion">
         🔄 MODIFICANDO REGISTRO SELECCIONADO
     </div>
 
-    <!-- Formulario Principal -->
-    <form id="form-inscripcion" onsubmit="procesarFormulario(event)">
-        <h3>Datos del Delegado y Equipo</h3>
-        
-        <div class="grid-2">
-            <div class="form-group">
-                <label>Comuna / Sector:</label>
-                <input type="text" id="comuna" required placeholder="Ej. Guaicaipuro el Grande">
-            </div>
-            <div class="form-group">
-                <label>Nombre del Delegado:</label>
-                <input type="text" id="delegado" required placeholder="Nombre y Apellido">
-            </div>
+    <form id="registroForm" onsubmit="enviarDatos(event)">
+        <div class="form-group">
+            <label>Comuna:</label>
+            <input type="text" id="comuna" required>
         </div>
-
-        <div class="grid-2">
-            <div class="form-group">
-                <label>Cédula del Delegado:</label>
-                <input type="text" id="cedulaDelegado" required placeholder="V-00000000">
-            </div>
-            <div class="form-group">
-                <label>Teléfono del Delegado:</label>
-                <input type="tel" id="telefonoDelegado" required placeholder="Ej. 0412-1234567">
-            </div>
+        <div class="form-group">
+            <label>Nombre del Delegado:</label>
+            <input type="text" id="delegado" required>
         </div>
-
-        <div class="grid-2">
-            <div class="form-group">
-                <label>Teléfono de Contacto (Emergencia):</label>
-                <input type="tel" id="telefonoContacto" required placeholder="Ej. 0424-7654321">
-            </div>
-            <div class="form-group">
-                <label>Disciplina Deportiva:</label>
-                <select id="disciplina" required>
-                    <option value="">Seleccione...</option>
-                    <option value="Baloncesto">Baloncesto</option>
-                    <option value="Fútbol Sala">Fútbol Sala</option>
-                    <option value="Voleibol">Voleibol</option>
-                    <option value="Atletismo">Atletismo</option>
-                    <option value="Kickingball">Kickingball</option>
-                </select>
-            </div>
+        <div class="form-group">
+            <label>Cédula del Delegado:</label>
+            <input type="text" id="cedula" required placeholder="V-00000000">
         </div>
-
+        <div class="form-group">
+            <label>Teléfono del Delegado:</label>
+            <input type="tel" id="telefonoDelegado" required placeholder="Ej. 0412-1234567">
+        </div>
+        <div class="form-group">
+            <label>Teléfono de Contacto (Emergencia):</label>
+            <input type="tel" id="telefonoContacto" required placeholder="Ej. 0424-7654321">
+        </div>
+        <div class="form-group">
+            <label>Disciplina:</label>
+            <select id="disciplina" required>
+                <option value="Fútbol Sala">Fútbol Sala</option>
+                <option value="Baloncesto">Baloncesto</option>
+                <option value="Voleibol">Voleibol</option>
+                <option value="Kickingball">Kickingball</option>
+            </select>
+        </div>
         <div class="form-group">
             <label>Categoría:</label>
             <select id="categoria" required>
-                <option value="">Seleccione...</option>
-                <option value="Sub-12">Sub-12</option>
-                <option value="Sub-14">Sub-14</option>
-                <option value="Sub-17">Sub-17</option>
-                <option value="Libre">Libre (Adultos)</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+                <option value="Libre">Libre</option>
             </select>
         </div>
 
-        <hr>
-        <h3>Nómina de Atletas (Máximo 12)</h3>
-        <div id="contenedor-atletas">
-            <!-- Los atletas se generan con JS -->
-        </div>
-        <button type="button" class="btn-dark" style="padding:6px 12px;" onclick="agregarFilaAtleta()">+ Añadir Atleta</button>
-
-        <button type="submit" id="btn-registrar" class="btn-primary">Finalizar Registro y Generar Ticket PDF</button>
-        <button type="button" id="btn-cancelar-edicion" class="btn-danger" style="width:100%; margin-top:5px; display:none;" onclick="cancelarModificacion()">Cancelar Modificación</button>
+        <h3>Atletas (Máximo 12)</h3>
+        <div id="atletasContainer"></div>
+        <button type="button" onclick="agregarAtleta()">+ Agregar Atleta</button>
+        <br><br>
+        
+        <button type="submit" id="btn-registrar">Finalizar Registro</button>
+        <button type="button" id="btn-cancelar" class="btn-danger" style="display:none; margin-top:5px; width:100%;" onclick="cancelarModificacion()">Cancelar Modificación</button>
     </form>
 
-    <!-- Sección Control Acceso Palacio -->
-    <div class="panel-login" id="seccion-login">
-        <h3>Personal del Palacio del Deporte</h3>
-        <p style="text-align:center; font-size:14px; color:#666;">Ingrese la clave de auditoría para ver, buscar y modificar nóminas.</p>
-        <div style="display:flex; gap:10px; max-width:400px; margin:0 auto;">
-            <input type="password" id="clave-palacio" placeholder="Clave de Acceso">
-            <button class="btn-dark" onclick="verificarAcceso()">Acceder</button>
-        </div>
-    </div>
-
-    <!-- Panel de Administración Oculto -->
-    <div class="panel-admin" id="panel-privado" style="display:none;">
-        <h3>Panel de Control y Modificaciones</h3>
-        
-        <!-- Buscador por Cédula del Delegado -->
-        <div class="search-box">
-            <span style="position:absolute; left:10px; top:10px;">🔍</span>
-            <input type="text" id="buscador-cedula" placeholder="Buscar registros por Cédula del Delegado..." onkeyup="filtrarPorCedula()">
+    <div class="admin-section">
+        <h3>Panel Personal Palacio del Deporte</h3>
+        <div id="loginAdmin">
+            <input type="password" id="passAdmin" placeholder="Contraseña de administración">
+            <button type="button" onclick="verificarPassword()">Acceder</button>
         </div>
 
-        <div style="overflow-x:auto;">
+        <div id="panelAdmin" style="display: none; margin-top: 20px;">
+            <h4>Registros Guardados</h4>
+            
+            <div class="form-group">
+                <input type="text" id="buscador-cedula" placeholder="🔍 Buscar por Cédula del Delegado..." onkeyup="filtrarPorCedula()">
+            </div>
+
             <table>
                 <thead>
                     <tr>
                         <th>Comuna</th>
                         <th>Delegado (C.I.)</th>
                         <th>Teléfonos</th>
-                        <th>Deporte / Cat.</th>
+                        <th>Deporte (Cat.)</th>
                         <th>Atletas</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody id="tabla-registros">
-                    <!-- Filas dinámicas -->
-                </tbody>
+                <tbody id="tablaRegistros"></tbody>
             </table>
         </div>
     </div>
 </div>
 
 <script>
-    // URL de tu túnel de Cloudflare activo en Proxmox
     const URL_SERVIDOR = "https://ratios-nokia-accurate-mate.trycloudflare.com";
-
-    // Variables de control de estado para modificaciones
+    
     let modoEdicion = false;
     let registroOriginal = { comuna: "", disciplina: "", categoria: "" };
 
-    // Inicializar el formulario con 3 filas de atletas por defecto
+    // Iniciar con 3 filas por defecto
     window.onload = function() {
-        for(let i=0; i<3; i++) agregarFilaAtleta();
+        for (let i = 0; i < 3; i++) agregarAtleta();
     };
 
-    function agregarFilaAtleta(datosAtleta = null) {
-        const contenedor = document.getElementById("contenedor-atletas");
-        const filasActuales = contenedor.children.length;
-        if (filasActuales >= 12) {
-            alert("Límite máximo de 12 atletas por nómina alcanzado.");
-            return;
-        }
+    function agregarAtleta(datosAtleta = null) {
+        const container = document.getElementById('atletasContainer');
+        if (container.children.length >= 12) return;
 
-        const div = document.createElement("div");
-        div.className = "atleta-row";
+        const div = document.createElement('div');
+        div.className = 'atleta-row';
         div.innerHTML = `
-            <input type="text" placeholder="Nombre Completo Atleta" class="atleta-nombre" required value="${datosAtleta ? datosAtleta.nombre : ''}">
-            <input type="text" placeholder="Cédula / Escolar" class="atleta-cedula" required value="${datosAtleta ? datosAtleta.cedula : ''}">
-            <input type="number" placeholder="Edad" class="atleta-edad" required min="5" max="99" value="${datosAtleta ? datosAtleta.edad : ''}">
+            <input type="text" placeholder="Nombre del Atleta" class="atleta-nombre" required value="${datosAtleta ? datosAtleta.nombre : ''}">
+            <input type="text" placeholder="Cédula" class="atleta-cedula" required value="${datosAtleta ? datosAtleta.cedula : ''}">
+            <input type="number" placeholder="Edad" class="atleta-edad edad-input" required min="5" max="99" value="${datosAtleta ? datosAtleta.edad : ''}">
         `;
-        contenedor.appendChild(div);
+        container.appendChild(div);
     }
 
-    // Recolectar atletas del formulario
     function obtenerAtletas() {
-        const nombres = document.querySelectorAll(".atleta-nombre");
-        const cedulas = document.querySelectorAll(".atleta-cedula");
-        const edades = document.querySelectorAll(".atleta-edad");
-        let lista = [];
-        
-        nombres.forEach((input, index) => {
-            if(input.value.trim() !== "") {
+        const nombres = document.querySelectorAll('.atleta-nombre');
+        const cedulas = document.querySelectorAll('.atleta-cedula');
+        const edades = document.querySelectorAll('.atleta-edad');
+        const lista = [];
+        nombres.forEach((el, idx) => {
+            if (el.value.trim() !== "") {
                 lista.push({
-                    nombre: input.value.trim(),
-                    cedula: cedulas[index].value.trim(),
-                    edad: edades[index].value.trim()
+                    nombre: el.value.trim(),
+                    cedula: cedulas[idx].value.trim(),
+                    edad: edades[idx].value.trim()
                 });
             }
         });
         return lista;
     }
 
-    // Registrar o Modificar Datos
-    async function procesarFormulario(e) {
+    async function enviarDatos(e) {
         e.preventDefault();
-        
         const payload = {
-            comuna: document.getElementById("comuna").value.trim(),
-            delegado: document.getElementById("delegado").value.trim(),
-            cedulaDelegado: document.getElementById("cedulaDelegado").value.trim(),
-            telefonoDelegado: document.getElementById("telefonoDelegado").value.trim(),
-            telefonoContacto: document.getElementById("telefonoContacto").value.trim(),
-            disciplina: document.getElementById("disciplina").value,
-            categoria: document.getElementById("categoria").value,
+            comuna: document.getElementById('comuna').value.trim(),
+            delegado: document.getElementById('delegado').value.trim(),
+            cedulaDelegado: document.getElementById('cedula').value.trim(),
+            telefonoDelegado: document.getElementById('telefonoDelegado').value.trim(),
+            telefonoContacto: document.getElementById('telefonoContacto').value.trim(),
+            disciplina: document.getElementById('disciplina').value,
+            categoria: document.getElementById('categoria').value,
             atletas: obtenerAtletas()
         };
 
         let endpoint = `${URL_SERVIDOR}/api/registrar-comuna`;
 
-        // Si estamos en modo edición, inyectamos los datos del registro viejo para el reemplazo en la MV
         if (modoEdicion) {
             endpoint = `${URL_SERVIDOR}/api/modificar-comuna`;
             payload.comunaOriginal = registroOriginal.comuna;
@@ -234,125 +181,97 @@
         }
 
         try {
-            const respuesta = await fetch(endpoint, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
+            const res = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
 
-            const resultado = await respuesta.json();
-
-            if (respuesta.ok) {
-                alert(modoEdicion ? "¡Registro modificado exitosamente en el Palacio!" : "¡Inscripción procesada correctamente!");
+            if (res.ok) {
+                alert(modoEdicion ? "¡Registro modificado correctamente!" : "¡Datos guardados con éxito!");
                 generarPDF(payload);
                 
-                if(modoEdicion) cancelarModificacion();
-                else document.getElementById("form-inscripcion").reset();
-                
-                // Recargar la tabla si el administrador tiene la sesión abierta
-                if(document.getElementById("panel-privado").style.display === "block") {
-                    cargarRegistrosPalacio();
+                if (modoEdicion) cancelarModificacion();
+                else document.getElementById('registroForm').reset();
+
+                if (document.getElementById('panelAdmin').style.display === 'block') {
+                    cargarRegistros();
                 }
             } else {
-                alert("Error del servidor: " + resultado.error);
+                const err = await res.json();
+                alert("Error: " + err.error);
             }
         } catch (error) {
-            console.error(error);
-            alert("Error al guardar datos. Asegúrate de que el backend y el túnel sigan corriendo.");
+            alert("Error al conectar con el servidor.");
         }
     }
 
-    // Generador de Tique en PDF con jsPDF
     function generarPDF(datos) {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
 
-        doc.setFont("helvetica", "bold");
-        doc.setFillColor(0, 86, 179);
-        doc.rect(0, 0, 210, 30, "F");
-        
-        doc.setTextColor(255, 255, 255);
         doc.setFontSize(16);
-        doc.text("COMPROBANTE OFICIAL DE INSCRIPCIÓN", 105, 12, { align: "center" });
-        doc.setFontSize(11);
-        doc.text("Juegos Deportivos Comunales 2026 - Palacio del Deporte", 105, 22, { align: "center" });
-
-        doc.setTextColor(0, 0, 0);
+        doc.text("Comprobante de Inscripción - Juegos Comunales 2025", 10, 20);
         doc.setFontSize(12);
-        doc.text(`Comuna / Sector: ${datos.comuna}`, 15, 45);
-        doc.text(`Delegado: ${datos.delegado}  |  C.I: ${datos.cedulaDelegado}`, 15, 53);
-        doc.text(`Teléfono Delegado: ${datos.telefonoDelegado}`, 15, 61);
-        doc.text(`Contacto Emergencia: ${datos.telefonoContacto}`, 15, 69);
-        doc.text(`Disciplina: ${datos.disciplina}  |  Categoría: ${datos.categoria}`, 15, 77);
+        doc.text(`Comuna: ${datos.comuna}`, 10, 35);
+        doc.text(`Delegado: ${datos.delegado} (C.I: ${datos.cedulaDelegado})`, 10, 43);
+        doc.text(`Teléfono Delegado: ${datos.telefonoDelegado}`, 10, 51);
+        doc.text(`Teléfono Contacto: ${datos.telefonoContacto}`, 10, 59);
+        doc.text(`Disciplina: ${datos.disciplina} - Categoría: ${datos.categoria}`, 10, 67);
 
-        doc.setLineWidth(0.5);
-        doc.line(15, 83, 195, 83);
-
-        doc.text("NÓMINA OFICIAL DE ATLETAS REGISTRADOS:", 15, 92);
-        
-        doc.setFont("helvetica", "normal");
-        let ejeY = 102;
+        doc.text("Nómina de Atletas:", 10, 80);
+        let y = 88;
         datos.atletas.forEach((atleta, i) => {
-            doc.text(`${i + 1}. ${atleta.nombre}`, 15, ejeY);
-            doc.text(`C.I: ${atleta.cedula}`, 110, ejeY);
-            doc.text(`Edad: ${atleta.edad} años`, 165, ejeY);
-            ejeY += 8;
+            doc.text(`${i + 1}. ${atleta.nombre} - C.I: ${atleta.cedula} - Edad: ${atleta.edad} años`, 10, y);
+            y += 8;
         });
 
-        doc.setFont("helvetica", "italic");
-        doc.setFontSize(10);
-        doc.text("Este ticket impreso o digital avala la participación del equipo en los juegos comunales.", 105, 275, { align: "center" });
-
-        doc.save(`Inscripcion_${datos.comuna.replace(/\s+/g, '_')}_${datos.disciplina}.pdf`);
+        doc.save(`Inscripcion_${datos.comuna}_${datos.disciplina}.pdf`);
     }
 
-    // Login del Personal del Palacio
-    function verificarAcceso() {
-        const clave = document.getElementById("clave-palacio").value;
-        if (clave === "palacio2026") {
-            document.getElementById("panel-privado").style.display = "block";
-            document.getElementById("seccion-login").style.display = "none";
-            cargarRegistrosPalacio();
+    function verificarPassword() {
+        const pass = document.getElementById('passAdmin').value;
+        if (pass === "palacio2026") {
+            document.getElementById('loginAdmin').style.display = 'none';
+            document.getElementById('panelAdmin').style.display = 'block';
+            cargarRegistros();
         } else {
-            alert("Clave incorrecta para el Palacio del Deporte.");
+            alert("Contraseña incorrecta");
         }
     }
 
-    // Traer base de datos JSON de la máquina virtual
-    async function cargarRegistrosPalacio() {
+    async function cargarRegistros() {
         try {
-            const respuesta = await fetch(`${URL_SERVIDOR}/api/atletas-comunales`);
-            const registros = await respuesta.json();
-            const tbody = document.getElementById("tabla-registros");
+            const res = await fetch(`${URL_SERVIDOR}/api/atletas-comunales`);
+            const datos = await res.json();
+            const tbody = document.getElementById('tablaRegistros');
             tbody.innerHTML = "";
 
-            registros.forEach(item => {
-                const fila = document.createElement("tr");
-                fila.className = "fila-datos";
-                // Atributo especial para que el buscador filtre por la cédula del delegado
-                fila.setAttribute("data-cedula", item.cedulaDelegado.toLowerCase().trim());
+            datos.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = "fila-datos";
+                tr.setAttribute("data-cedula", item.cedulaDelegado.toLowerCase().trim());
 
-                let listaAtletasHTML = item.atletas.map(a => `• ${a.nombre} (${a.cedula}) - ${a.edad} añ.`).join("<br>");
+                let atletasStr = item.atletas.map(a => `• ${a.nombre} (${a.cedula}) - ${a.edad} añ.`).join('<br>');
 
-                fila.innerHTML = `
-                    <td><strong>${item.comuna}</strong></td>
-                    <td>${item.delegado}<br><span style="color:#666; font-size:13px;">C.I: ${item.cedulaDelegado}</span></td>
-                    <td style="font-size:13px;">Cel: ${item.telefonoDelegado}<br>Emerg: ${item.telefonoContacto}</td>
-                    <td><span style="color:blue;font-weight:bold;">${item.disciplina}</span><br>(${item.categoria})</td>
-                    <td style="font-size:12px; max-width:250px;">${listaAtletasHTML}</td>
+                tr.innerHTML = `
+                    <td>${item.comuna}</td>
+                    <td>${item.delegado}<br><small>C.I: ${item.cedulaDelegado}</small></td>
+                    <td><small>Telf: ${item.telefonoDelegado}<br>Emerg: ${item.telefonoContacto}</small></td>
+                    <td>${item.disciplina}<br><small>(${item.categoria})</small></td>
+                    <td>${atletasStr}</td>
                     <td>
                         <button class="btn-warning" onclick="cargarParaModificar(${JSON.stringify(item).replace(/"/g, '&quot;')})">Modificar</button>
                         <button class="btn-danger" onclick="eliminarRegistro('${item.comuna}', '${item.disciplina}', '${item.categoria}')">Eliminar</button>
                     </td>
                 `;
-                tbody.appendChild(fila);
+                tbody.appendChild(tr);
             });
         } catch (error) {
-            console.error("Error al poblar la tabla:", error);
+            console.error(error);
         }
     }
 
-    // Filtro del Buscador por Cédula en tiempo real
     function filtrarPorCedula() {
         const busqueda = document.getElementById("buscador-cedula").value.toLowerCase().trim();
         const filas = document.querySelectorAll(".fila-datos");
@@ -367,35 +286,26 @@
         });
     }
 
-    // Cargar registro seleccionado de vuelta al formulario principal
     function cargarParaModificar(item) {
         modoEdicion = true;
-        
-        // Guardamos las claves del archivo para decirle al backend a quién va a suplantar
         registroOriginal = { comuna: item.comuna, disciplina: item.disciplina, categoria: item.categoria };
 
-        // Llenar campos de texto y combos
-        document.getElementById("comuna").value = item.comuna;
-        document.getElementById("delegado").value = item.delegado;
-        document.getElementById("cedulaDelegado").value = item.cedulaDelegado;
-        document.getElementById("telefonoDelegado").value = item.telefonoDelegado;
-        document.getElementById("telefonoContacto").value = item.telefonoContacto;
-        document.getElementById("disciplina").value = item.disciplina;
-        document.getElementById("categoria").value = item.categoria;
+        document.getElementById('comuna').value = item.comuna;
+        document.getElementById('delegado').value = item.delegado;
+        document.getElementById('cedula').value = item.cedulaDelegado;
+        document.getElementById('telefonoDelegado').value = item.telefonoDelegado || '';
+        document.getElementById('telefonoContacto').value = item.telefonoContacto || '';
+        document.getElementById('disciplina').value = item.disciplina;
+        document.getElementById('categoria').value = item.categoria;
 
-        // Limpiar contenedor de atletas y renderizar los que se van a modificar
-        const contenedor = document.getElementById("contenedor-atletas");
-        contenedor.innerHTML = "";
-        item.atletas.forEach(atleta => {
-            agregarFilaAtleta(atleta);
-        });
+        const container = document.getElementById('atletasContainer');
+        container.innerHTML = "";
+        item.atletas.forEach(atleta => agregarAtleta(atleta));
 
-        // Modificar visibilidad de interfaz
-        document.getElementById("alerta-edicion").style.display = "block";
-        document.getElementById("btn-cancelar-edicion").style.display = "block";
-        document.getElementById("btn-registrar").innerText = "Guardar Cambios en Palacio";
+        document.getElementById('alerta-edicion').style.display = "block";
+        document.getElementById('btn-cancelar').style.display = "block";
+        document.getElementById('btn-registrar').innerText = "Guardar Cambios";
 
-        // Subir scroll automáticamente al formulario
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -403,34 +313,29 @@
         modoEdicion = false;
         registroOriginal = { comuna: "", disciplina: "", categoria: "" };
         
-        document.getElementById("form-inscripcion").reset();
-        document.getElementById("contenedor-atletas").innerHTML = "";
-        for(let i=0; i<3; i++) agregarFilaAtleta();
+        document.getElementById('registroForm').reset();
+        document.getElementById('atletasContainer').innerHTML = "";
+        for (let i = 0; i < 3; i++) agregarAtleta();
 
-        document.getElementById("alerta-edicion").style.display = "none";
-        document.getElementById("btn-cancelar-edicion").style.display = "none";
-        document.getElementById("btn-registrar").innerText = "Finalizar Registro y Generar Ticket PDF";
+        document.getElementById('alerta-edicion').style.display = "none";
+        document.getElementById('btn-cancelar').style.display = "none";
+        document.getElementById('btn-registrar').innerText = "Finalizar Registro";
     }
 
-    // Acción del botón Eliminar masivo
     async function eliminarRegistro(comuna, disciplina, categoria) {
-        if (!confirm(`¿Está completamente seguro de dar de baja la nómina de ${disciplina} (${categoria}) de la comuna ${comuna}?`)) return;
-
+        if (!confirm("¿Seguro que deseas eliminar este registro?")) return;
         try {
-            const respuesta = await fetch(`${URL_SERVIDOR}/api/eliminar-comuna`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
+            const res = await fetch(`${URL_SERVIDOR}/api/eliminar-comuna`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ comuna, disciplina, categoria })
             });
-
-            if (respuesta.ok) {
-                alert("Nómina eliminada del sistema.");
-                cargarRegistrosPalacio();
-            } else {
-                alert("No se pudo eliminar el bloque.");
+            if (res.ok) {
+                alert("Registro eliminado");
+                cargarRegistros();
             }
         } catch (error) {
-            alert("Error de conexión al eliminar.");
+            alert("Error al eliminar");
         }
     }
 </script>
