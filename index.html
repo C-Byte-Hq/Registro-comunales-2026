@@ -131,7 +131,7 @@
             <div id="admin-login" class="max-w-sm mx-auto text-center space-y-3 py-6">
                 <h2 class="text-xl font-bold">Acceso Control Personal Palacio del Deporte</h2>
                 <input type="password" id="admin-pass" placeholder="Contraseña de control" class="w-full border p-2 rounded">
-                <button onclick="verificarAccesoAdmin()" class="w-full bg-indigo-600 text-white py-2 rounded font-semibold">Entrar</button>
+                <button onclick="verificarAccAccessAdmin()" class="w-full bg-indigo-600 text-white py-2 rounded font-semibold">Entrar</button>
             </div>
 
             <div id="admin-panel" class="hidden space-y-4">
@@ -204,12 +204,14 @@
 
     <div id="plantilla-pdf-comunal" class="hidden p-10 bg-white text-black font-sans" style="width: 790px;">
         <div class="flex items-center justify-between border-b-2 border-gray-800 pb-2 mb-4">
-            <img src="photo_1.png" alt="Logo Izquierdo" style="height: 60px; width: auto; object-fit: contain;">
-            <div class="text-center style="flex-1: 1 0 0%;">
+            <img src="photo_1.png" alt="Logo Izquierdo" style="height: 55px; width: auto; object-fit: contain;">
+            
+            <div class="text-center" style="flex: 1;">
                 <h1 class="text-2xl font-bold uppercase">Ficha de Inscripción Colectiva</h1>
                 <p class="text-xs tracking-widest uppercase font-semibold">Juegos Comunales | Palacio del Deporte</p>
             </div>
-            <img src="photo_2.png" alt="Logo Derecho" style="height: 60px; width: auto; object-fit: contain;">
+            
+            <img src="photo_2.png" alt="Logo Derecho" style="height: 55px; width: auto; object-fit: contain;">
         </div>
         <div class="grid grid-cols-2 gap-y-2 text-sm mb-4 border p-3 rounded bg-gray-50">
             <p><strong>Comuna:</strong> <span id="pdf-comuna"></span></p>
@@ -416,7 +418,7 @@
             }).from(elem).save().then(() => elem.classList.add('hidden'));
         }
 
-        function verificarAccesoAdmin() {
+        function verificarAccAccessAdmin() {
             if(document.getElementById('admin-pass').value === "palacio2026") {
                 document.getElementById('admin-login').classList.add('hidden');
                 document.getElementById('admin-panel').classList.remove('hidden');
@@ -525,7 +527,7 @@
         // --- ACTUALIZADA: RECONOCE PARROQUIA AL MODIFICAR ---
         function cargarParaModificar(item) {
             modoEdicion = true;
-            registroOriginal = { comuna: item.comuna, disciplina: item.disciplina, categoria: item.categoria };
+            registroOriginal = { comuna: item.comuna, disciplina: item.disciplina, category: item.categoria };
             // Encontrar a qué parroquia pertenece la comuna
             let parroquiaEncontrada = "";
             for (const p in DATA_COMUNAS) {
