@@ -10,31 +10,31 @@
 </head>
 <body class="bg-gray-100 text-gray-800 font-sans">
 
-    <!-- BARRA DE NAVEGACIÓN REDISEÑADA -->
+    <!-- BARRA DE NAVEGACIÓN -->
     <nav class="bg-indigo-700 text-white shadow-md">
-        <div class="max-w-7xl mx-auto px-4 h-24 flex justify-between items-center">
+        <div class="max-w-7xl mx-auto px-4 h-28 flex justify-between items-center">
             <!-- Logo Izquierdo -->
-            <img src="photo_1.jpg" alt="Logo Izquierda" class="h-20 w-auto object-contain">
+            <img src="photo_1.jpg" alt="Logo 1" class="h-24 w-auto object-contain">
             
             <!-- Título Central -->
-            <div class="text-center flex-grow px-4">
+            <div class="text-center flex-grow px-2">
                 <span class="font-bold text-xl sm:text-2xl tracking-wider block uppercase">Juegos Comunales 2026</span>
-                <span class="text-xs sm:text-sm opacity-80 uppercase tracking-widest">Palacio del Deporte</span>
+                <span class="text-xs sm:text-sm opacity-90 uppercase tracking-widest font-semibold">Municipio Guaicaipuro</span>
             </div>
 
             <!-- Logo Derecho y Botones -->
-            <div class="flex items-center space-x-4">
-                <img src="photo_2.jpg" alt="Logo Derecha" class="h-20 w-auto object-contain">
-                <div class="hidden md:flex flex-col space-y-1">
-                    <button onclick="cambiarVista('registro')" class="hover:bg-indigo-800 px-3 py-1 rounded text-xs font-medium border border-indigo-400">Registro</button>
-                    <button onclick="cambiarVista('admin')" class="hover:bg-indigo-800 px-3 py-1 rounded text-xs font-medium border border-indigo-400">Admin</button>
+            <div class="flex items-center space-x-6">
+                <img src="photo_2.jpg" alt="Logo 2" class="h-24 w-auto object-contain">
+                <div class="hidden lg:flex flex-col space-y-2">
+                    <button onclick="cambiarVista('registro')" class="bg-indigo-800 hover:bg-indigo-900 px-4 py-1.5 rounded text-xs font-bold border border-indigo-500 transition shadow-sm">REGISTRO</button>
+                    <button onclick="cambiarVista('admin')" class="bg-indigo-800 hover:bg-indigo-900 px-4 py-1.5 rounded text-xs font-bold border border-indigo-500 transition shadow-sm">ADMIN</button>
                 </div>
             </div>
         </div>
-        <!-- Botones móviles -->
-        <div class="md:hidden flex justify-center space-x-2 pb-2">
-            <button onclick="cambiarVista('registro')" class="text-[10px] bg-indigo-800 px-2 py-1 rounded">Registro</button>
-            <button onclick="cambiarVista('admin')" class="text-[10px] bg-indigo-800 px-2 py-1 rounded">Admin</button>
+        <!-- Menú móvil -->
+        <div class="lg:hidden flex justify-center space-x-4 pb-3">
+            <button onclick="cambiarVista('registro')" class="text-[10px] font-bold bg-indigo-900 px-3 py-1 rounded border border-indigo-500 uppercase">Registro</button>
+            <button onclick="cambiarVista('admin')" class="text-[10px] font-bold bg-indigo-900 px-3 py-1 rounded border border-indigo-500 uppercase">Admin</button>
         </div>
     </nav>
 
@@ -42,10 +42,10 @@
 
         <section id="vista-registro" class="bg-white p-6 rounded-lg shadow border">
             <div id="alerta-edicion" class="hidden bg-yellow-50 border border-yellow-200 text-yellow-800 p-3 rounded-md mb-4 font-semibold text-center animate-pulse">
-                🔄 Modo Edición Activo: Modificando nómina seleccionada del Palacio del Deporte
+                🔄 Modo Edición Activo: Modificando nómina seleccionada
             </div>
 
-            <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-2 text-indigo-700 uppercase text-center">Registro de Nómina por Comuna</h2>
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b-2 pb-2 text-indigo-700 uppercase text-center">Formulario de Inscripción de Equipos</h2>
             
             <form id="form-comunal" onsubmit="procesarInscripcion(event)" class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 p-4 rounded-md border">
@@ -115,20 +115,20 @@
                 <div>
                     <div class="flex justify-between items-center mb-2">
                         <h3 class="text-lg font-bold text-gray-700 uppercase">Atletas en Nómina</h3>
-                        <button type="button" onclick="agregarFilaAtleta()" class="bg-indigo-600 text-white px-3 py-1.5 rounded text-sm font-semibold hover:bg-indigo-700 shadow">+ Añadir Atleta</button>
+                        <button type="button" onclick="agregarFilaAtleta()" class="bg-indigo-600 text-white px-3 py-1.5 rounded text-sm font-semibold hover:bg-indigo-700 transition shadow">+ Añadir Atleta</button>
                     </div>
                     
                     <div id="contenedor-atletas" class="space-y-3">
                         <div class="fila-atleta p-4 bg-indigo-50/50 rounded border space-y-3">
                             <div class="grid grid-cols-1 sm:grid-cols-4 gap-2">
-                                <input type="text" placeholder="Cédula de Identidad" required class="atleta-cedula p-2 border rounded w-full bg-white text-sm">
-                                <input type="text" placeholder="Nombre Completo del Atleta" required class="atleta-nombre p-2 border rounded w-full sm:col-span-2 bg-white text-sm">
+                                <input type="text" placeholder="Cédula" required class="atleta-cedula p-2 border rounded w-full bg-white text-sm">
+                                <input type="text" placeholder="Nombre Completo" required class="atleta-nombre p-2 border rounded w-full sm:col-span-2 bg-white text-sm">
                                 <input type="number" placeholder="Edad" required min="1" max="99" class="atleta-edad p-2 border rounded w-full bg-white text-sm">
                             </div>
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                                <input type="tel" placeholder="Teléfono del Representante" required class="atleta-tel-rep p-2 border rounded w-full bg-white text-sm">
-                                <input type="text" placeholder="Dirección de Habitación" required class="atleta-direccion p-2 border rounded w-full bg-white text-sm">
-                                <input type="text" placeholder="¿Dónde estudia actualmente?" required class="atleta-colegio p-2 border rounded w-full bg-white text-sm">
+                                <input type="tel" placeholder="Tlf Rep." required class="atleta-tel-rep p-2 border rounded w-full bg-white text-sm">
+                                <input type="text" placeholder="Dirección" required class="atleta-direccion p-2 border rounded w-full bg-white text-sm">
+                                <input type="text" placeholder="¿Dónde estudia?" required class="atleta-colegio p-2 border rounded w-full bg-white text-sm">
                             </div>
                         </div>
                     </div>
@@ -136,33 +136,39 @@
 
                 <div class="space-y-2">
                     <button type="submit" id="btn-finalizar" class="w-full bg-green-600 text-white font-bold py-3 rounded hover:bg-green-700 shadow transition uppercase tracking-widest">
-                        Finalizar Registro y Descargar PDF
+                        Finalizar Registro y Generar Ficha PDF
                     </button>
                     <button type="button" id="btn-cancelar-edicion" onclick="cancelarModificacion()" class="hidden w-full bg-red-600 text-white font-bold py-2 rounded hover:bg-red-700 shadow transition uppercase tracking-widest">
-                        Cancelar Modificación
+                        Cancelar Edición
                     </button>
                 </div>
             </form>
         </section>
 
-        <!-- VISTA ADMIN -->
+        <!-- VISTA ADMINISTRACIÓN -->
         <section id="vista-admin" class="hidden bg-white p-6 rounded-lg shadow border">
             <div id="admin-login" class="max-w-sm mx-auto text-center space-y-3 py-6">
-                <h2 class="text-xl font-bold">Acceso Control Palacio del Deporte</h2>
-                <input type="password" id="admin-pass" placeholder="Contraseña de control" class="w-full border p-2 rounded">
-                <button onclick="verificarAccesoAdmin()" class="w-full bg-indigo-600 text-white py-2 rounded font-semibold">Entrar</button>
+                <h2 class="text-xl font-bold uppercase text-indigo-700">Acceso Control Palacio</h2>
+                <input type="password" id="admin-pass" placeholder="Contraseña" class="w-full border p-2 rounded">
+                <button onclick="verificarAccesoAdmin()" class="w-full bg-indigo-600 text-white py-2 rounded font-bold uppercase">Entrar</button>
             </div>
 
             <div id="admin-panel" class="hidden space-y-4">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b pb-3 gap-2">
-                    <h2 class="text-xl font-bold text-indigo-700 uppercase">Panel Único de Control Comunal</h2>
-                    <button onclick="exportarExcelFiltrado()" class="bg-green-600 text-white px-4 py-2 rounded text-sm font-semibold hover:bg-green-700 shadow">Exportar a Excel</button>
+                    <h2 class="text-xl font-bold text-indigo-700 uppercase">Panel Control Comunal</h2>
+                    <button onclick="exportarExcelFiltrado()" class="bg-green-600 text-white px-4 py-2 rounded text-sm font-bold hover:bg-green-700 shadow uppercase">Exportar Excel</button>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-gray-50 p-4 rounded border">
-                    <input type="text" id="buscador-cedula" onkeyup="aplicarFiltros()" placeholder="Buscar Cédula Delegado" class="p-2 border rounded bg-white text-sm">
+                    <input type="text" id="buscador-cedula" onkeyup="aplicarFiltros()" placeholder="Filtrar por Cédula Delegado" class="p-2 border rounded bg-white text-sm">
                     <select id="filtro-comuna" onchange="aplicarFiltros()" class="p-2 border rounded bg-white text-sm"><option value="">Todas las comunas</option></select>
-                    <select id="filtro-disciplina" onchange="aplicarFiltros()" class="p-2 border rounded bg-white text-sm"><option value="">Todas las disciplinas</option></select>
+                    <select id="filtro-disciplina" onchange="aplicarFiltros()" class="p-2 border rounded bg-white text-sm">
+                        <option value="">Todas las disciplinas</option>
+                        <option value="Kickimbol">Kickimbol</option>
+                        <option value="Béisbol five">Béisbol five</option>
+                        <option value="Baloncesto 3x3">Baloncesto 3x3</option>
+                        <option value="Baloncesto 5x5">Baloncesto 5x5</option>
+                    </select>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -171,7 +177,7 @@
                             <tr>
                                 <th class="p-3 border">Comuna</th>
                                 <th class="p-3 border">Disciplina</th>
-                                <th class="p-3 border text-center">Cat.</th>
+                                <th class="p-3 border text-center">Categoría</th>
                                 <th class="p-3 border text-center">Acciones</th>
                             </tr>
                         </thead>
@@ -182,48 +188,48 @@
         </section>
     </main>
 
-    <!-- PLANTILLA PDF REDISEÑADA -->
+    <!-- PLANTILLA PDF CON LOGOS EN EXTREMOS -->
     <div id="plantilla-pdf-comunal" class="hidden p-10 bg-white text-black font-sans" style="width: 850px;">
         <div class="flex justify-between items-center border-b-4 border-gray-800 pb-4 mb-6">
-            <!-- Logo PDF Izquierdo -->
-            <img src="photo_4958528469402848515_y.jpg" style="height: 100px; width: auto; object-fit: contain;">
+            <!-- Logo Izquierdo PDF -->
+            <img src="photo_1.jpg" style="height: 110px; width: auto; object-fit: contain;">
             
             <div class="text-center flex-grow">
-                <h1 class="text-2xl font-bold uppercase leading-tight">Ficha de Inscripción Colectiva</h1>
+                <h1 class="text-2xl font-bold uppercase leading-tight">Ficha Colectiva de Inscripción</h1>
                 <p class="text-sm tracking-widest uppercase font-bold text-gray-700">Juegos Comunales Guaicaipuro 2026</p>
-                <p class="text-xs uppercase mt-1">Palacio del Deporte "Luis Navarro"</p>
+                <p class="text-xs uppercase mt-1 font-semibold italic">Palacio del Deporte "Luis Navarro"</p>
             </div>
 
-            <!-- Logo PDF Derecho -->
-            <img src="photo_4958528469402848516_y (2).jpg" style="height: 100px; width: auto; object-fit: contain;">
+            <!-- Logo Derecho PDF -->
+            <img src="photo_2.jpg" style="height: 110px; width: auto; object-fit: contain;">
         </div>
 
-        <div class="grid grid-cols-2 gap-y-3 text-sm mb-6 border-2 p-4 rounded-lg bg-gray-50 shadow-inner">
-            <p><strong>COMUNA:</strong> <span id="pdf-comuna" class="border-b border-dotted border-black ml-1 uppercase"></span></p>
-            <p><strong>DISCIPLINA:</strong> <span id="pdf-disciplina" class="border-b border-dotted border-black ml-1 uppercase"></span></p>
-            <p><strong>CATEGORÍA:</strong> <span id="pdf-categoria" class="border-b border-dotted border-black ml-1 uppercase"></span></p>
-            <p><strong>DELEGADO:</strong> <span id="pdf-delegado" class="border-b border-dotted border-black ml-1 uppercase"></span></p>
-            <p><strong>C.I. DELEGADO:</strong> <span id="pdf-cedula-delegado" class="border-b border-dotted border-black ml-1 uppercase"></span></p>
-            <p><strong>TELÉFONO:</strong> <span id="pdf-tel-delegado" class="border-b border-dotted border-black ml-1 uppercase"></span></p>
-            <p class="col-span-2"><strong>FECHA DE EMISIÓN:</strong> <span id="pdf-fecha" class="ml-1 uppercase"></span></p>
+        <div class="grid grid-cols-2 gap-y-4 text-sm mb-6 border-2 border-black p-4 rounded-lg bg-gray-50">
+            <p><strong>COMUNA/SECTOR:</strong> <span id="pdf-comuna" class="ml-1 uppercase font-bold border-b border-black"></span></p>
+            <p><strong>DISCIPLINA:</strong> <span id="pdf-disciplina" class="ml-1 uppercase font-bold border-b border-black"></span></p>
+            <p><strong>AÑO (CAT):</strong> <span id="pdf-categoria" class="ml-1 uppercase font-bold border-b border-black"></span></p>
+            <p><strong>DELEGADO:</strong> <span id="pdf-delegado" class="ml-1 uppercase font-bold border-b border-black"></span></p>
+            <p><strong>C.I. DELEGADO:</strong> <span id="pdf-cedula-delegado" class="ml-1 font-bold border-b border-black"></span></p>
+            <p><strong>TELÉFONO:</strong> <span id="pdf-tel-delegado" class="ml-1 font-bold border-b border-black"></span></p>
+            <p class="col-span-2"><strong>FECHA EMISIÓN:</strong> <span id="pdf-fecha" class="ml-1 uppercase font-bold italic"></span></p>
         </div>
 
-        <h3 class="font-bold text-sm uppercase mb-2 border-b-2 border-black text-center bg-gray-100 py-1">Nómina de Atletas</h3>
-        <table class="w-full text-left text-xs border-2 border-collapse border-black">
+        <h3 class="font-bold text-sm uppercase mb-2 border-b-2 border-black text-center bg-gray-200 py-1">Nómina Avalada de Atletas</h3>
+        <table class="w-full text-left text-xs border-2 border-black border-collapse">
             <thead>
-                <tr class="bg-gray-200">
-                    <th class="p-2 border border-black text-center w-10">N°</th>
-                    <th class="p-2 border border-black">CÉDULA</th>
+                <tr class="bg-gray-100">
+                    <th class="p-2 border border-black text-center w-12">N°</th>
+                    <th class="p-2 border border-black">CÉDULA DE IDENTIDAD</th>
                     <th class="p-2 border border-black">NOMBRES Y APELLIDOS</th>
-                    <th class="p-2 border border-black text-center">EDAD</th>
+                    <th class="p-2 border border-black text-center w-20">EDAD</th>
                 </tr>
             </thead>
             <tbody id="pdf-tabla-atletas"></tbody>
         </table>
 
-        <div class="mt-32 flex justify-between text-center text-[10px] px-10">
-            <div class="w-56 border-t-2 border-black pt-2 uppercase font-bold">Firma del Delegado</div>
-            <div class="w-56 border-t-2 border-black pt-2 uppercase font-bold">Sello y Taquilla Palacio</div>
+        <div class="mt-32 flex justify-between text-center text-[11px] px-12">
+            <div class="w-60 border-t-2 border-black pt-2 uppercase font-black">Firma del Delegado</div>
+            <div class="w-60 border-t-2 border-black pt-2 uppercase font-black">Sello / Registro Palacio</div>
         </div>
     </div>
 
@@ -269,15 +275,15 @@
             nuevaFila.innerHTML = `
                 <div class="grid grid-cols-1 sm:grid-cols-4 gap-2">
                     <input type="text" placeholder="Cédula" required class="atleta-cedula p-2 border rounded w-full bg-white text-sm" value="${datosAtleta ? datosAtleta.cedula : ''}">
-                    <input type="text" placeholder="Nombre Completo" required class="atleta-nombre p-2 border rounded w-full sm:col-span-2 bg-white text-sm" value="${datosAtleta ? datosAtleta.nombre : ''}">
-                    <input type="number" placeholder="Edad" required min="1" max="99" class="atleta-edad p-2 border rounded w-full bg-white text-sm" value="${datosAtleta ? datosAtleta.edad : ''}">
+                    <input type="text" placeholder="Nombres" required class="atleta-nombre p-2 border rounded w-full sm:col-span-2 bg-white text-sm" value="${datosAtleta ? datosAtleta.nombre : ''}">
+                    <input type="number" placeholder="Edad" required class="atleta-edad p-2 border rounded w-full bg-white text-sm" value="${datosAtleta ? datosAtleta.edad : ''}">
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                    <input type="tel" placeholder="Tlf Rep." required class="atleta-tel-rep p-2 border rounded w-full bg-white text-sm" value="${datosAtleta ? datosAtleta.telRep : ''}">
+                    <input type="tel" placeholder="Tlf Representante" required class="atleta-tel-rep p-2 border rounded w-full bg-white text-sm" value="${datosAtleta ? datosAtleta.telRep : ''}">
                     <input type="text" placeholder="Dirección" required class="atleta-direccion p-2 border rounded w-full bg-white text-sm" value="${datosAtleta ? datosAtleta.direccion : ''}">
-                    <input type="text" placeholder="Estudio" required class="atleta-colegio p-2 border rounded w-full bg-white text-sm" value="${datosAtleta ? datosAtleta.colegio : ''}">
+                    <input type="text" placeholder="Lugar de Estudio" required class="atleta-colegio p-2 border rounded w-full bg-white text-sm" value="${datosAtleta ? datosAtleta.colegio : ''}">
                 </div>
-                <button type="button" onclick="this.parentElement.remove()" class="bg-red-500 text-white px-3 py-1 text-xs rounded font-bold absolute top-2 right-2">X</button>
+                <button type="button" onclick="this.parentElement.remove()" class="bg-red-500 text-white px-2 py-0.5 rounded text-[10px] font-bold absolute top-2 right-2">X</button>
             `;
             contenedor.appendChild(nuevaFila);
         }
@@ -320,12 +326,12 @@
             .then(res => res.json())
             .then(data => {
                 descargarFichaPDF(datosPayload);
-                alert("¡Procesado con éxito!");
+                alert("¡Inscripción Exitosa!");
                 if(modoEdicion) cancelarModificacion();
                 else { document.getElementById('form-comunal').reset(); restablecerContenedorAtletas(); }
                 if(!document.getElementById('admin-panel').classList.contains('hidden')) cargarDatosDesdeServidor();
             })
-            .catch(err => { console.error(err); alert("Error al conectar con servidor."); });
+            .catch(err => alert("Error al guardar datos."));
         }
 
         function restablecerContenedorAtletas() {
@@ -345,13 +351,13 @@
             const tbody = document.getElementById('pdf-tabla-atletas');
             tbody.innerHTML = "";
             datos.atletas.forEach((atleta, index) => {
-                tbody.innerHTML += `<tr><td class="p-2 border border-black text-center">${index+1}</td><td class="p-2 border border-black">${atleta.cedula}</td><td class="p-2 border border-black font-bold uppercase">${atleta.nombre}</td><td class="p-2 border border-black text-center">${atleta.edad}</td></tr>`;
+                tbody.innerHTML += `<tr><td class="p-2 border border-black text-center font-bold">${index+1}</td><td class="p-2 border border-black">${atleta.cedula}</td><td class="p-2 border border-black font-black uppercase">${atleta.nombre}</td><td class="p-2 border border-black text-center font-bold">${atleta.edad} AÑOS</td></tr>`;
             });
 
             const elem = document.getElementById('plantilla-pdf-comunal');
             elem.classList.remove('hidden');
             html2pdf().set({
-                margin: 0.5, filename: `FICHA_${datos.comuna}_${datos.disciplina}.pdf`,
+                margin: 0.5, filename: `NOMINA_${datos.comuna}_${datos.disciplina}.pdf`,
                 html2canvas: { scale: 2 }, jsPDF: { unit: 'cm', format: 'letter', orientation: 'portrait' }
             }).from(elem).save().then(() => elem.classList.add('hidden'));
         }
@@ -361,7 +367,7 @@
                 document.getElementById('admin-login').classList.add('hidden');
                 document.getElementById('admin-panel').classList.remove('hidden');
                 cargarDatosDesdeServidor();
-            } else alert("Contraseña incorrecta");
+            } else alert("Acceso Denegado");
         }
 
         function cargarDatosDesdeServidor() {
@@ -370,7 +376,7 @@
             .then(data => {
                 cacheDatosInscritos = data;
                 const selectC = document.getElementById('filtro-comuna');
-                selectC.innerHTML = '<option value="">Comuna</option>';
+                selectC.innerHTML = '<option value="">Filtrar Comuna</option>';
                 [...new Set(data.map(i => i.comuna))].forEach(c => selectC.innerHTML += `<option value="${c}">${c}</option>`);
                 renderizarPanelConsolidado(data);
             });
@@ -382,15 +388,21 @@
             datos.forEach((row, index) => {
                 tbody.innerHTML += `
                     <tr>
-                        <td class="p-3 border font-bold">${row.comuna}</td>
-                        <td class="p-3 border">${row.disciplina}</td>
-                        <td class="p-3 border text-center">${row.categoria}</td>
+                        <td class="p-3 border font-bold uppercase">${row.comuna}</td>
+                        <td class="p-3 border font-medium">${row.disciplina}</td>
+                        <td class="p-3 border text-center font-mono">${row.categoria}</td>
                         <td class="p-3 border text-center">
-                            <button onclick='reimprimirFicha(${index})' class="bg-blue-600 text-white px-2 py-1 rounded text-[10px]">PDF</button>
-                            <button onclick='cargarParaModificar(${JSON.stringify(row)})' class="bg-orange-500 text-white px-2 py-1 rounded text-[10px]">Edit</button>
+                            <button onclick='reimprimirFicha(${index})' class="bg-indigo-600 text-white px-2 py-1 rounded text-[10px] font-bold">PDF</button>
+                            <button onclick='cargarParaModificar(${JSON.stringify(row)})' class="bg-orange-500 text-white px-2 py-1 rounded text-[10px] font-bold">EDIT</button>
                         </td>
                     </tr>`;
             });
+        }
+
+        function aplicarFiltros() {
+            const fC = document.getElementById('filtro-comuna').value.toLowerCase();
+            const res = cacheDatosInscritos.filter(i => fC === "" || i.comuna.toLowerCase() === fC);
+            renderizarPanelConsolidado(res);
         }
 
         function cargarParaModificar(item) {
@@ -407,13 +419,6 @@
             window.scrollTo(0,0);
         }
 
-        function aplicarFiltros() {
-            const fC = document.getElementById('filtro-comuna').value.toLowerCase();
-            const fD = document.getElementById('filtro-disciplina').value.toLowerCase();
-            const res = cacheDatosInscritos.filter(i => (fC === "" || i.comuna.toLowerCase() === fC) && (fD === "" || i.disciplina.toLowerCase() === fD));
-            renderizarPanelConsolidado(res);
-        }
-
         function cancelarModificacion() {
             modoEdicion = false;
             document.getElementById('form-comunal').reset();
@@ -426,8 +431,8 @@
         function exportarExcelFiltrado() {
             const wb = XLSX.utils.book_new();
             const ws = XLSX.utils.json_to_sheet(cacheDatosInscritos.flatMap(i => i.atletas.map(a => ({ Comuna: i.comuna, Disciplina: i.disciplina, Atleta: a.nombre, CI: a.cedula }))));
-            XLSX.utils.book_append_sheet(wb, ws, "Nomina");
-            XLSX.writeFile(wb, "Inscritos_2026.xlsx");
+            XLSX.utils.book_append_sheet(wb, ws, "Nóminas");
+            XLSX.writeFile(wb, "Reporte_Juegos_2026.xlsx");
         }
     </script>
 </body>
