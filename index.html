@@ -182,7 +182,7 @@
                             </tr>
                         </thead>
                         <tbody id="cuerpo-maestro-palacio" class="divide-y">
-                            </tbody>
+                        </tbody>
                     </table>
                 </div>
 
@@ -203,9 +203,13 @@
     </main>
 
     <div id="plantilla-pdf-comunal" class="hidden p-10 bg-white text-black font-sans" style="width: 790px;">
-        <div class="text-center border-b-2 border-gray-800 pb-2 mb-4">
-            <h1 class="text-2xl font-bold uppercase">Ficha de Inscripción Colectiva</h1>
-            <p class="text-xs tracking-widest uppercase font-semibold">Juegos Comunales | Palacio del Deporte</p>
+        <div class="flex items-center justify-between border-b-2 border-gray-800 pb-2 mb-4">
+            <img src="photo_1.png" alt="Logo Izquierdo" style="height: 60px; width: auto; object-fit: contain;">
+            <div class="text-center style="flex-1: 1 0 0%;">
+                <h1 class="text-2xl font-bold uppercase">Ficha de Inscripción Colectiva</h1>
+                <p class="text-xs tracking-widest uppercase font-semibold">Juegos Comunales | Palacio del Deporte</p>
+            </div>
+            <img src="photo_2.png" alt="Logo Derecho" style="height: 60px; width: auto; object-fit: contain;">
         </div>
         <div class="grid grid-cols-2 gap-y-2 text-sm mb-4 border p-3 rounded bg-gray-50">
             <p><strong>Comuna:</strong> <span id="pdf-comuna"></span></p>
@@ -236,7 +240,6 @@
 
     <script>
         const URL_SERVIDOR = "https://romantic-radio-certification-steven.trycloudflare.com";
-        
         // --- NUEVO: DATA DE COMUNAS POR PARROQUIA ---
         const DATA_COMUNAS = {
             "Los Teques": [
@@ -253,7 +256,7 @@
             "Cecilio Acosta": [
                 "El legado de Chávez", "San Diego Guatopori", "Manantiales de Agua Fría", 
                 "Guerrero de los Ocumitos", "Tierras de Guare Cuna de Cecilio Acosta", 
-                "Agrícola Guaicaipuro y sus luchadores", "Lideres de las 5 generaciones", 
+                "Agrícola Guaicaipuro y sus luchadores", "Lideres de las 5 generations", 
                 "Produciendo en revolucion - Agua Fria", "Hijos de Guaicaipuro", "Nietos de Maisanta"
             ],
             "Tacatá": ["La Fortaleza Sabaneta", "Guerrero Yoraco"],
@@ -263,7 +266,6 @@
                 "Circuito comunal Guaicaipuro El Valiente", "Guerreros 4 F"
             ]
         };
-
         // --- NUEVA FUNCIÓN PARA ACTUALIZAR EL SEGUNDO SELECTOR ---
         function actualizarComunas() {
             const parroquia = document.getElementById('ins-parroquia').value;
@@ -286,7 +288,6 @@
         let cacheDatosInscritos = [];
         let modoEdicion = false;
         let registroOriginal = { comuna: "", disciplina: "", categoria: "" };
-
         function cambiarVista(vista) {
             document.getElementById('vista-registro').classList.add('hidden');
             document.getElementById('vista-admin').classList.add('hidden');
@@ -339,7 +340,6 @@
                 telDelegado: document.getElementById('ins-tel-delegado').value,
                 atletas: listaAtletas
             };
-
             let endpoint = `${URL_SERVIDOR}/api/registrar-comuna`;
 
             if (modoEdicion) {
@@ -408,12 +408,11 @@
             datos.atletas.forEach((atleta, index) => {
                 tbody.innerHTML += `<tr><td class="p-1.5 border text-center">${index+1}</td><td class="p-1.5 border">${atleta.cedula}</td><td class="p-1.5 border font-medium">${atleta.nombre}</td><td class="p-1.5 border text-center">${atleta.edad} años</td></tr>`;
             });
-
             const elem = document.getElementById('plantilla-pdf-comunal');
             elem.classList.remove('hidden');
             html2pdf().set({
                 margin: 1, filename: `Ficha_${datos.comuna}_${datos.disciplina}.pdf`,
-                html2canvas: { scale: 2 }, jsPDF: { unit: 'cm', format: 'letter', orientation: 'portrait' }
+                html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'cm', format: 'letter', orientation: 'portrait' }
             }).from(elem).save().then(() => elem.classList.add('hidden'));
         }
 
@@ -457,7 +456,6 @@
                 
                 return cumpleComuna && cumpleDisciplina && cumpleCedula;
             });
-
             renderizarPanelConsolidado(datosFiltrados);
         }
 
@@ -467,7 +465,6 @@
             
             tbodyExcel.innerHTML = "";
             tbodyVisual.innerHTML = "";
-
             if(datos.length === 0) {
                 tbodyVisual.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-400">Ningún registro coincide con los criterios de búsqueda.</td></tr>`;
                 return;
@@ -512,7 +509,6 @@
                         </td>
                     </tr>
                 `;
-
                 row.atletas.forEach(atleta => {
                     tbodyExcel.innerHTML += `
                         <tr>
@@ -530,7 +526,6 @@
         function cargarParaModificar(item) {
             modoEdicion = true;
             registroOriginal = { comuna: item.comuna, disciplina: item.disciplina, categoria: item.categoria };
-
             // Encontrar a qué parroquia pertenece la comuna
             let parroquiaEncontrada = "";
             for (const p in DATA_COMUNAS) {
@@ -543,19 +538,16 @@
             document.getElementById('ins-parroquia').value = parroquiaEncontrada;
             actualizarComunas(); // Cargar la lista de comunas de esa parroquia
             document.getElementById('ins-comuna').value = item.comuna;
-            
             document.getElementById('ins-disciplina').value = item.disciplina;
             document.getElementById('ins-categoria').value = item.categoria;
             document.getElementById('ins-delegado').value = item.delegado;
             document.getElementById('ins-cedula-delegado').value = item.cedulaDelegado || '';
             document.getElementById('ins-tel-delegado').value = item.telDelegado;
-
             const contenedor = document.getElementById('contenedor-atletas');
             contenedor.innerHTML = "";
             item.atletas.forEach(atleta => {
                 agregarFilaAtleta(atleta);
             });
-
             document.getElementById('alerta-edicion').classList.remove('hidden');
             document.getElementById('btn-cancelar-edicion').classList.remove('hidden');
             document.getElementById('btn-finalizar').innerText = "Guardar Cambios Editados (Palacio)";
@@ -586,7 +578,6 @@
 
         function eliminarInscripcion(comuna, disciplina, categoria) {
             if(!confirm(`¿Seguro que desea dar de baja la nómina de ${disciplina} de la comuna ${comuna}?`)) return;
-            
             fetch(`${URL_SERVIDOR}/api/eliminar-comuna`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
