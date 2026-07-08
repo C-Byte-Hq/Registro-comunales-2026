@@ -12,10 +12,15 @@
 
     <nav class="bg-indigo-700 text-white shadow-md">
         <div class="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
-            <span class="font-bold text-lg tracking-wider">Juegos Comunales 2026</span>
-            <div class="space-x-2">
+            <img src="photo_1.png" alt="Logo Izquierdo" class="h-10 w-auto object-contain mr-3">
+            
+            <span class="font-bold text-lg tracking-wider flex-1 text-left">Juegos Comunales 2026</span>
+            
+            <div class="space-x-2 flex items-center">
                 <button onclick="cambiarVista('registro')" class="hover:bg-indigo-800 px-3 py-2 rounded text-sm font-medium">Formulario de Registro</button>
                 <button onclick="cambiarVista('admin')" class="hover:bg-indigo-800 px-3 py-2 rounded text-sm font-medium">Personal Palacio</button>
+                
+                <img src="photo_2.png" alt="Logo Derecho" class="h-10 w-auto object-contain ml-3">
             </div>
         </div>
     </nav>
@@ -131,7 +136,7 @@
             <div id="admin-login" class="max-w-sm mx-auto text-center space-y-3 py-6">
                 <h2 class="text-xl font-bold">Acceso Control Personal Palacio del Deporte</h2>
                 <input type="password" id="admin-pass" placeholder="Contraseña de control" class="w-full border p-2 rounded">
-                <button onclick="verificarAccAccessAdmin()" class="w-full bg-indigo-600 text-white py-2 rounded font-semibold">Entrar</button>
+                <button onclick="verificarAccesoAdmin()" class="w-full bg-indigo-600 text-white py-2 rounded font-semibold">Entrar</button>
             </div>
 
             <div id="admin-panel" class="hidden space-y-4">
@@ -242,7 +247,6 @@
 
     <script>
         const URL_SERVIDOR = "https://romantic-radio-certification-steven.trycloudflare.com";
-        // --- NUEVO: DATA DE COMUNAS POR PARROQUIA ---
         const DATA_COMUNAS = {
             "Los Teques": [
                 "Comuna Suruapo Suruapay", "Comuna Dr. Francisco Espejo 2019", "Comuna Maisanta Vive", 
@@ -268,7 +272,7 @@
                 "Circuito comunal Guaicaipuro El Valiente", "Guerreros 4 F"
             ]
         };
-        // --- NUEVA FUNCIÓN PARA ACTUALIZAR EL SEGUNDO SELECTOR ---
+
         function actualizarComunas() {
             const parroquia = document.getElementById('ins-parroquia').value;
             const selectComuna = document.getElementById('ins-comuna');
@@ -290,6 +294,7 @@
         let cacheDatosInscritos = [];
         let modoEdicion = false;
         let registroOriginal = { comuna: "", disciplina: "", categoria: "" };
+
         function cambiarVista(vista) {
             document.getElementById('vista-registro').classList.add('hidden');
             document.getElementById('vista-admin').classList.add('hidden');
@@ -418,7 +423,7 @@
             }).from(elem).save().then(() => elem.classList.add('hidden'));
         }
 
-        function verificarAccAccessAdmin() {
+        function verificarAccesoAdmin() {
             if(document.getElementById('admin-pass').value === "palacio2026") {
                 document.getElementById('admin-login').classList.add('hidden');
                 document.getElementById('admin-panel').classList.remove('hidden');
@@ -524,11 +529,9 @@
             });
         }
 
-        // --- ACTUALIZADA: RECONOCE PARROQUIA AL MODIFICAR ---
         function cargarParaModificar(item) {
             modoEdicion = true;
-            registroOriginal = { comuna: item.comuna, disciplina: item.disciplina, category: item.categoria };
-            // Encontrar a qué parroquia pertenece la comuna
+            registroOriginal = { comuna: item.comuna, disciplina: item.disciplina, categoria: item.categoria };
             let parroquiaEncontrada = "";
             for (const p in DATA_COMUNAS) {
                 if (DATA_COMUNAS[p].includes(item.comuna)) {
@@ -538,7 +541,7 @@
             }
 
             document.getElementById('ins-parroquia').value = parroquiaEncontrada;
-            actualizarComunas(); // Cargar la lista de comunas de esa parroquia
+            actualizarComunas();
             document.getElementById('ins-comuna').value = item.comuna;
             document.getElementById('ins-disciplina').value = item.disciplina;
             document.getElementById('ins-categoria').value = item.categoria;
