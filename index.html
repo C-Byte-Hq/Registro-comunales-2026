@@ -11,16 +11,16 @@
 <body class="bg-gray-100 text-gray-800 font-sans">
 
     <nav class="bg-indigo-700 text-white shadow-md">
-        <div class="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
-            <img src="photo_1.png" alt="Logo Izquierdo" class="h-10 w-auto object-contain mr-3">
+        <div class="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
+            <img src="photo_1.png" alt="Logo Izquierdo" class="h-12 sm:h-14 w-auto object-contain mr-4">
             
-            <span class="font-bold text-lg tracking-wider flex-1 text-left">Juegos Comunales 2026</span>
+            <span class="font-bold text-xl tracking-wider flex-1 text-left uppercase">Juegos Comunales 2026</span>
             
-            <div class="space-x-2 flex items-center">
-                <button onclick="cambiarVista('registro')" class="hover:bg-indigo-800 px-3 py-2 rounded text-sm font-medium">Formulario de Registro</button>
-                <button onclick="cambiarVista('admin')" class="hover:bg-indigo-800 px-3 py-2 rounded text-sm font-medium">Personal Palacio</button>
+            <div class="space-x-3 flex items-center">
+                <button onclick="cambiarVista('registro')" class="hover:bg-indigo-800 px-3 py-2 rounded text-sm font-medium transition">Formulario de Registro</button>
+                <button onclick="cambiarVista('admin')" class="hover:bg-indigo-800 px-3 py-2 rounded text-sm font-medium transition">Personal Palacio</button>
                 
-                <img src="photo_2.png" alt="Logo Derecho" class="h-10 w-auto object-contain ml-3">
+                <img src="photo_2.png" alt="Logo Derecho" class="h-12 sm:h-14 w-auto object-contain ml-4">
             </div>
         </div>
     </nav>
@@ -208,15 +208,15 @@
     </main>
 
     <div id="plantilla-pdf-comunal" class="hidden p-10 bg-white text-black font-sans" style="width: 790px;">
-        <div class="flex items-center justify-between border-b-2 border-gray-800 pb-2 mb-4">
-            <img src="photo_1.png" alt="Logo Izquierdo" style="height: 55px; width: auto; object-fit: contain;">
+        <div class="flex items-center justify-between border-b-2 border-gray-800 pb-3 mb-4">
+            <img src="photo_1.png" alt="Logo Izquierdo" style="height: 75px; width: auto; object-fit: contain;">
             
             <div class="text-center" style="flex: 1;">
-                <h1 class="text-2xl font-bold uppercase">Ficha de Inscripción Colectiva</h1>
-                <p class="text-xs tracking-widest uppercase font-semibold">Juegos Comunales | Palacio del Deporte</p>
+                <h1 class="text-2xl font-bold uppercase tracking-wide">Ficha de Inscripción Colectiva</h1>
+                <p class="text-xs tracking-widest uppercase font-semibold text-gray-600 mt-1">Juegos Comunales | Palacio del Deporte</p>
             </div>
             
-            <img src="photo_2.png" alt="Logo Derecho" style="height: 55px; width: auto; object-fit: contain;">
+            <img src="photo_2.png" alt="Logo Derecho" style="height: 75px; width: auto; object-fit: contain;">
         </div>
         <div class="grid grid-cols-2 gap-y-2 text-sm mb-4 border p-3 rounded bg-gray-50">
             <p><strong>Comuna:</strong> <span id="pdf-comuna"></span></p>
